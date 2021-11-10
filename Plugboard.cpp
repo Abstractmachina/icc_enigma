@@ -8,11 +8,13 @@
 
 using namespace std;
 
-
+//CONSTRUCTORS
 Plugboard::Plugboard(const char* pbConfig)
 {
   load(pbConfig);
 }
+
+/*************FUNCTIONS****************/
 
 /*load number pairs from a config file*/
 void Plugboard::load(const char* pbConfig){
@@ -44,14 +46,20 @@ void Plugboard::load(const char* pbConfig){
 }
 
 void Plugboard::print(){
-  cout << "Plugboard\n\nNumber Pairs:\n";
+  cout << "Plugboard Pairs:\n";
   for (auto it = numPairList; it != NULL; it = it->next)
   {
     cout << it->numPair->getString() << endl;
   }
-  /*
-  for (int i = 0; i < _BUFFER_PLUGBOARD; i++){
-    cout << _numberPairs[i]->getString() << endl;
+}
+
+/***********************DESTRUCTOR**************************/
+Plugboard::~Plugboard()
+{
+  for (auto it = numPairList; it != NULL; it = it->next)
+  {
+    auto tmp = it->next;
+    delete it;
+    it = tmp;
   }
-  */
 }
