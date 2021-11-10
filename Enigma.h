@@ -5,15 +5,19 @@
 
 class Enigma
 {
-private:
   Plugboard* plugboard;
+
 public:
   //Constructors
   Enigma();
-  Enigma(const char* pbConfig, char* reflector, char* rotors, int startPosition);
+  Enigma(const char* pbConfig, const char* reflector, const char* rotors, int startPosition);
 
   void printPlugboard();
 
+  ~Enigma()
+  {
+    delete plugboard;
+  }
 
 };
 

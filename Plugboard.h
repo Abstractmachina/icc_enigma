@@ -1,15 +1,16 @@
 #ifndef PLUGBOARD_H
 #define PLUGBOARD_H
 
+#include "NumPair.h"
+
+
+/*The Plugboard class contains a list of number Pairs
+which specify the letters to be swapped with each other.*/
 class Plugboard
 {
-private:
-
-  //static int const _BUFFER_PLUGBOARD = 56;
-  int _numberPairs[52];
+  NumPairListNode* numPairList; //linked list of number pairs
 
 public:
-  Plugboard();
   Plugboard(const char* pbConfig);
 
   /*load number pairs from a config file*/
