@@ -1,5 +1,5 @@
-#ifndef NUMPAIR_H
-#define NUMPAIR_H
+#ifndef STRUCTS_H
+#define STRUCTS_H
 
 #include <string>
 
@@ -21,16 +21,34 @@ struct NumPair
   }
 };
 
-#endif
-
-#ifndef NUMPAIRLISTNODE_H
-#define NUMPAIRLISTNODE_H
-
-/*linked list impl. for number pairs*/
-struct NumPairListNode {
+/********linked list impl. for number pairs***********/
+struct NumPairListNode
+{
  NumPair* numPair;
  NumPairListNode(NumPair* p) : numPair(p){};
  NumPairListNode* next = nullptr;
 };
+
+struct ListNode_int
+{
+  int val;
+  ListNode_int* next = NULL;
+  ListNode_int(int val_) : val(val_){};
+};
+
+/***************** GENERIC LINKED LIST *********/
+
+template <typename T>
+struct Node
+{
+  T* val;
+  Node<T>* next = NULL;
+  Node<T>(T* val_)
+  {
+    val = val_;
+  };
+
+};
+
 
 #endif

@@ -1,7 +1,7 @@
 SOURCES = $(wildcard *.cpp) $(wildcard */*.cpp) $(wildcard *.h) $(wildcard */*.ch)
 
-enigma: main.o Enigma.o Plugboard.o Reflector.o
-	g++ -Wall main.o Enigma.o Plugboard.o Reflector.o -o enigma
+enigma: main.o Enigma.o Plugboard.o Reflector.o Rotor.o
+	g++ -Wall main.o Enigma.o Plugboard.o Reflector.o Rotor.o -o enigma
 
 main.o: main.cpp Enigma.h Plugboard.h
 	g++ -Wall -g -c main.cpp
@@ -14,6 +14,9 @@ Plugboard.o: Plugboard.cpp Plugboard.h
 
 Reflector.o: Reflector.cpp Reflector.h
 	g++ -Wall -g -c Reflector.cpp Reflector.h
+
+Rotor.o: Rotor.cpp Rotor.h
+	g++ -Wall -g -c Rotor.cpp Rotor.h
 
 clean:
 	rm -f *.o enigma

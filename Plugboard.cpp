@@ -33,12 +33,12 @@ void Plugboard::load(const char* pbConfig){
     //_numberPairs[count++] = pair;
 
     if (numPairList == NULL)
-      numPairList = new NumPairListNode(pair);
+      numPairList = new Node<NumPair>(pair);
     else
     {
-      NumPairListNode* node = numPairList;
+      auto node = numPairList;
       while (node->next != NULL) node = node->next;
-      node->next = new NumPairListNode(pair);
+      node->next = new Node<NumPair>(pair);
     }
 
   }
@@ -49,7 +49,7 @@ void Plugboard::print(){
   cout << "Plugboard Pairs:\n";
   for (auto it = numPairList; it != NULL; it = it->next)
   {
-    cout << it->numPair->getString() << endl;
+    cout << it->val->getString() << endl;
   }
 }
 

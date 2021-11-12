@@ -1,7 +1,7 @@
 #ifndef REFLECTOR_H
 #define REFLECTOR_H
 
-#include "NumPair.h"
+#include "structs.h"
 
 class Reflector
 {

@@ -10,10 +10,19 @@ Enigma* enigma;
 int main(int argc, char** argv)
 {
 
-	enigma = new Enigma("plugboards/II.pb", "reflectors/I.rf", NULL, 0);
+ 	cout<< "The number of arguments is " << argc << endl;
 
-	enigma->printPlugboard();
-	enigma->printReflector();
+	
+	for (int i = 0; i < argc; i++)
+	{
+		cout << argv[i] << endl;
+	}
+
+	//enigma = new Enigma(argc, argv);
+	//enigma = new Enigma("plugboards/II.pb", "reflectors/I.rf", NULL, 0);
+
+	//enigma->printPlugboard();
+//	enigma->printReflector();
 
 
 	return 0;

@@ -41,6 +41,12 @@ int Reflector::load(const char* refConfig)
     int b = -1;
     in >> a;
     in >> b;
+    if (in.fail())
+    {
+      //TODO check error handling
+      cout << "Invalid Reflector Mapping.";
+      return 10;
+    }
     if (a == -1 || b == -1) break; //end of file
     NumPair* pair = new NumPair(a,b);
 
