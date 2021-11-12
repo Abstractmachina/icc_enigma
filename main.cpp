@@ -1,5 +1,6 @@
 #include <iostream>
 #include <cstdio>
+#include <string>
 
 #include "Enigma.h"
 
@@ -9,21 +10,30 @@ Enigma* enigma;
 
 int main(int argc, char** argv)
 {
-
- 	cout<< "The number of arguments is " << argc << endl;
-
-	
+	cerr << "number of args: " << argc << '\n';
+	cerr << "arguments:\n";
 	for (int i = 0; i < argc; i++)
 	{
-		cout << argv[i] << endl;
+		cerr << argv[i] << endl;
 	}
 
-	//enigma = new Enigma(argc, argv);
-	//enigma = new Enigma("plugboards/II.pb", "reflectors/I.rf", NULL, 0);
+	string inTxt = "";
+	char c = cin.get();
+	while (!cin.eof())
+	{
+		inTxt += c;
+		cerr << c;
+		c = cin.get();
 
-	//enigma->printPlugboard();
-//	enigma->printReflector();
+	}
 
+	cout << inTxt;
+
+	enigma = new Enigma();
+	enigma->load(argc, argv);
+	enigma->printPlugboard();
+	enigma->printReflector();
+	enigma->printRotors();
 
 	return 0;
 }

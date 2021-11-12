@@ -14,6 +14,7 @@ struct NumPair
 
   string getString()
   {
+    
     string first = to_string(A);
     string second = to_string(B);
     string result = "{" + first + ";" + second + "}";

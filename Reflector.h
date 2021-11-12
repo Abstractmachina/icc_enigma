@@ -6,9 +6,13 @@
 class Reflector
 {
   static const int MAX_PAIR = 13;
-  NumPair* pairs[MAX_PAIR];
+
+  int _mapping[MAX_PAIR*2];
+
+  bool checkInvalidMapping(int a[MAX_PAIR], int b[MAX_PAIR]);
 
 public:
+  Reflector();
   Reflector(const char* refConfig);
 
   int load(const char* refConfig);
@@ -16,10 +20,6 @@ public:
 
   ~Reflector()
   {
-    for (int i = 0; i < MAX_PAIR; i++)
-    {
-      delete pairs[i];
-    }
   }
 };
 

@@ -11,30 +11,24 @@ class Enigma
 {
   Plugboard* plugboard;
   Reflector* reflector;
-  Node<Rotor>* rotors;
-
-  int processInput(int argc, char** argv);
+  Rotor* _rotors;
+  int _numRotors = 0;
 
 public:
   //Constructors
   Enigma();
-  Enigma(const char* pbConfig, const char* refConfig,
-    const char* rotConfig, int startPosition);
   Enigma(int argc, char** argv);
 
+  int load(int argc, char** argv);
   void printPlugboard();
   void printReflector();
+  void printRotors();
 
   ~Enigma()
   {
     delete plugboard;
     delete reflector;
-    for (auto it = rotors; it != NULL; it = it->next)
-    {
-      auto tmp = it;
-      delete it;
-      it = tmp;
-    }
+    delete[] _rotors;
   }
 };
 #endif

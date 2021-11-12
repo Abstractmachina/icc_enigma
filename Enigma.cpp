@@ -3,41 +3,35 @@
 
 #include "Enigma.h"
 
-Enigma::Enigma(){}
-
-Enigma::Enigma(const char* pbConfig, const char* refConfig,
-  const char* rotors, int startPosition)
+Enigma::Enigma()
 {
-  plugboard = new Plugboard(pbConfig);
-  reflector = new Reflector(refConfig);
+
 }
 
 Enigma::Enigma(int argc, char** argv)
 {
-  processInput(argc, argv);
+  load(argc, argv);
 }
 
-void Enigma::printPlugboard()
+int Enigma::load(int argc, char** argv)
 {
-  plugboard->print();
-}
+  plugboard = new Plugboard();
+  int pb = plugboard->load(argv[1]);
 
-void Enigma::printReflector()
-{
-  reflector->print();
-}
+  reflector = new Reflector();
+  reflector->load(argv[2]);
 
-int Enigma::processInput(int argc, char** argv)
-{
 
-  plugboard = new Plugboard(argv[1]);
-  reflector = new Reflector(argv[2]);
-
-  for (int i = 3; i < argc; i++)
+  _numRotors = argc - 4; //-reflector, plugboard, startpos and filename
+  _rotors = new Rotor[_numRotors];
+  for (int i = 0; i < _numRotors; i++)
   {
-    Rotor* rot = new Rotor(argv[i]);
-    rotors->next = new Node<Rotor>(rot);
+    _rotors[i] = *(new Rotor());
+    _rotors[i].load(argv[i+3], argv[argc-1], i);
   }
-
   return 0;
 }
+
+void Enigma::printPlugboard() {plugboard->print(); }
+void Enigma::printReflector(){ reflector->print(); }
+void Enigma::printRotors() { for (int i = 0; i < _numRotors; i++) _rotors[i].print(); }

@@ -3,44 +3,168 @@
 
 #include "Rotor.h"
 
-Rotor::Rotor(char* rotConfig)
-{
-  load(rotConfig);
-}
+/************ CONSTRUCTORS  *******/
+Rotor::Rotor() {}
 
+/*********  FUNCTIONS ***********/
 
-int Rotor::load(char* rotConfig)
+/*Init rotor from configuration files. */
+int Rotor::load(char* rotConfig, char* startPosConfig, int ind)
 {
+  setIndex(ind);
+
+  //start in stream
   ifstream in(rotConfig);
-  if (!in) {
-    cout << "Loading rotor config failed!\n";
+  if (!in)
+  {
+    cerr << "Loading rotor config failed!\n";
     return 11;
   }
 
+  int digitCounter = 0; //
+  if (!hasValidNumber(in, digitCounter)) return 8;
 
-  int count = 0;
-  while (!in.eof())
+  int index[NUM_LETTERS/2];
+  int value[NUM_LETTERS/2];
+  for (int i = 0; i < NUM_LETTERS; i++)
   {
-    int a = -1;
-    in >> a;
+    int val = -1;
+    in >> val;
+
+    //check for invalid type
     if (in.fail())
     {
       //TODO check error handling
-      cout << "Invalid rotor mapping!\n";
-      cout << "Input must be integers only.\n";
-      return 7;
+      cerr << "NON_NUMERIC_CHARACTER\n";
+      in.close();
+      return 4;
     }
-
-    if (a == -1) break; //end of file
-
-    if (count < 26) _mapping[count++] = a;
-
-    else
+    //check for invalid index
+    if (val < 0 || val >= NUM_LETTERS)
     {
-      int* a_ptr = &a;
-      _notches->next = new Node<int>(a_ptr);
+      cerr << "Invalid Index!\n";
+      return 3;
     }
+
+    if (i == 0) index[0] = val;
+    else if (i % 2 == 0) index[i/2] = val;
+    else value[(i-1) / 2] = val;
+  }
+
+  loadNotches(in, digitCounter);
+
+  in.close();
+
+  if (isInvalidMapping(index, value)) return 7;
+
+  //translate to mapping
+  for (int i = 0; i < NUM_LETTERS/2; i++)
+  {
+    _mapping[index[i]] = value[i];
+    _mapping[value[i]] = index [i];
+  }
+
+  //load start position
+  int sp = loadStartPosition(startPosConfig, ind);
+  if (sp != 0) return sp;
+
+  return 0;
+}
+
+
+/*read notch parameters from config file and load into Rotor*/
+bool Rotor::loadNotches(ifstream& in, int const digitCounter)
+{
+  int numNotches = digitCounter - NUM_LETTERS;
+
+  if (numNotches <=0) return false;
+
+  _notches = new int[numNotches];
+  for(int i = 0; i < numNotches && !in.eof(); i++)
+  {
+    int nVal = -1;
+    in >> nVal;
+    if (nVal != -1)_notches[i] = nVal;
+  }
+
+  return true;
+}
+
+int Rotor::loadStartPosition(char* startPosConfig, int index)
+{
+  //load start position
+  ifstream in(startPosConfig);
+  if (!in) {
+    cerr << "Loading start position config failed!\n";
+    return 11;
+  }
+  int startPos = -1;
+  for (int i = 0; i <= index; i++)
+  {
+    in >> startPos;
+  }
+  if (startPos == -1)
+  {
+    cerr << "No rotor starting position found!" << endl;
+    return 8;
   }
   in.close();
+  _startPos = startPos;
+
   return 0;
+}
+
+bool Rotor::hasValidNumber(ifstream& in, int& digitCounter)
+{
+  digitCounter = 0;
+  while (!in.eof())
+  {
+    int temp = -1;
+    in >> temp;
+    if (temp != -1) digitCounter++;
+  }
+  if (digitCounter < NUM_LETTERS)
+  {
+    cerr << "Invalid number of digits!\n";
+    return false;
+  }
+  in.clear();                 // clear fail and eof bits
+  in.seekg(0, std::ios::beg); // back to the start!
+  return true;
+}
+
+bool Rotor::isInvalidMapping(int a[], int b[])
+{
+  // check for invalid reflector mapping
+  for (int i = 0; i < NUM_LETTERS; i++)
+  {
+    int count = 0;
+    for (int j = 0; j < NUM_LETTERS/2; j++)
+    {
+        if (a[j] == i || b[j] == i) count++;
+        if (a[j] == b[j]) //if it maps to itself
+        {
+          cerr << "Invalid rotor mapping!\n";
+          return true;
+        }
+    }
+    if (count != 1) //if there is duplicate mapping
+    {
+      cerr << "Invalid rotor mapping!\n";
+      return true;
+    }
+  }
+  return false;
+}
+
+void Rotor::print()
+{
+  cerr << "Rotor " << _index << ":"<< endl;
+  cerr <<"Start Position: " << _startPos << " ; " << "Rotation: " << _rotation << " }\n";
+  cerr << "Mapping: \n";
+  for (int i = 0; i < NUM_LETTERS; i++)
+  {
+    cerr << "{ " << i << " ; " << _mapping[i] << " }\n";
+  }
+  cerr << endl;
 }
