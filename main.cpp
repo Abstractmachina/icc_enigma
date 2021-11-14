@@ -10,30 +10,21 @@ Enigma* enigma;
 
 int main(int argc, char** argv)
 {
-	cerr << "number of args: " << argc << '\n';
-	cerr << "arguments:\n";
-	for (int i = 0; i < argc; i++)
-	{
-		cerr << argv[i] << endl;
-	}
-
-	string inTxt = "";
-	char c = cin.get();
-	while (!cin.eof())
-	{
-		inTxt += c;
-		cerr << c;
-		c = cin.get();
-
-	}
-
-	cout << inTxt;
-
 	enigma = new Enigma();
-	enigma->load(argc, argv);
-	enigma->printPlugboard();
-	enigma->printReflector();
-	enigma->printRotors();
+
+	int loadStatus = enigma->load(argc, argv);
+	if (loadStatus != 0) return loadStatus;
+
+	//enigma->printRotors();
+	//enigma->printReflector();
+	//enigma->printPlugboard();
+
+	string out = "";
+	int encryptionStatus = enigma->encrypt(cin, out);
+	if (encryptionStatus != 0) return encryptionStatus;
+
+	cerr << "Output: " << out << endl;
+	cout << out;
 
 	return 0;
 }

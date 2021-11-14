@@ -17,6 +17,10 @@ Plugboard::Plugboard(const char* pbConfig)
 
 /*************FUNCTIONS****************/
 
+void Plugboard::scramble(int& digit)
+{
+  digit = _mapping[digit];
+}
 
 /*load number pairs from a config file*/
 int Plugboard::load(const char* pbConfig)
@@ -66,18 +70,13 @@ int Plugboard::load(const char* pbConfig)
   if(isInvalidMapping(index, value, count/2)) return 10;
 
   //translate to mapping
-
-  for (int i = 0; i < LETTER_COUNT; i++)
-  {
-    _mapping[i] = i;
-
-  }
-
+  //init standard mapping
+  for (int i = 0; i < LETTER_COUNT; i++) _mapping[i] = i;
+  //assign new pairs
   for (int i = 0; i < count/2; i++)
   {
     _mapping[index[i]] = value[i];
     _mapping[value[i]] = index [i];
-
   }
 
   return 0;

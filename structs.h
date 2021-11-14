@@ -14,13 +14,15 @@ struct NumPair
 
   string getString()
   {
-    
+
     string first = to_string(A);
     string second = to_string(B);
     string result = "{" + first + ";" + second + "}";
     return result;
   }
 };
+
+
 
 /********linked list impl. for number pairs***********/
 struct NumPairListNode
@@ -36,6 +38,8 @@ struct ListNode_int
   ListNode_int* next = NULL;
   ListNode_int(int val_) : val(val_){};
 };
+/********linked list impl. for ints***********/
+
 
 /***************** GENERIC LINKED LIST *********/
 
@@ -44,10 +48,13 @@ struct Node
 {
   T* val;
   Node<T>* next = NULL;
+  Node<T>* prev = NULL;
   Node<T>(T* val_)
   {
     val = val_;
   };
+
+
 
 };
 

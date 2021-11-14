@@ -21,5 +21,6 @@ Rotor.o: Rotor.cpp Rotor.h
 Util.o: Util.cpp Util.h
 	g++ -Wall -g -c Util.cpp Util.h
 
+
 clean:
 	rm -f *.o enigma

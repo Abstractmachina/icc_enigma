@@ -16,6 +16,7 @@ public:
 
   /*load number pairs from a config file*/
   int load(const char* pbConfig);
+  void scramble(int& digit);
   void print();
 
   ~Plugboard();

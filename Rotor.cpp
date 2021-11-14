@@ -1,12 +1,46 @@
-#include <fstream>
-#include <iostream>
-
 #include "Rotor.h"
+
+using namespace std;
 
 /************ CONSTRUCTORS  *******/
 Rotor::Rotor() {}
 
 /*********  FUNCTIONS ***********/
+
+void Rotor::scramble(int& digit, bool step, bool& isNotch)
+{
+  if (step) _rotation++; //step once
+  int translation = (digit + _startPos + _rotation);
+  if (translation > NUM_LETTERS - 1 ) translation %= NUM_LETTERS;
+
+  //check for notches;
+  isNotch = false;
+  if (_notches != NULL)
+  {
+    for (auto it = _notches; it != NULL; it = it->next)
+    {
+      if (translation == it->val)
+      {
+        isNotch = true;
+        break;
+      }
+    }
+  }
+  //scramble
+  digit = _mapping[translation];
+
+  //offset back to correct position
+  digit -= _rotation + _startPos;
+  //loop backward to get to correct index;
+  if (digit < 0)
+  {
+    while (digit < 0)
+    {
+      digit = NUM_LETTERS + digit;
+    }
+  }
+
+}
 
 /*Init rotor from configuration files. */
 int Rotor::load(char* rotConfig, char* startPosConfig, int ind)
@@ -52,6 +86,7 @@ int Rotor::load(char* rotConfig, char* startPosConfig, int ind)
   }
 
   loadNotches(in, digitCounter);
+  printNotches();
 
   in.close();
 
@@ -72,19 +107,31 @@ int Rotor::load(char* rotConfig, char* startPosConfig, int ind)
 }
 
 
-/*read notch parameters from config file and load into Rotor*/
+/*read notch parameters from config file and load into Rotor
+
+*/
 bool Rotor::loadNotches(ifstream& in, int const digitCounter)
 {
   int numNotches = digitCounter - NUM_LETTERS;
 
-  if (numNotches <=0) return false;
-
-  _notches = new int[numNotches];
   for(int i = 0; i < numNotches && !in.eof(); i++)
   {
     int nVal = -1;
     in >> nVal;
-    if (nVal != -1)_notches[i] = nVal;
+
+    if (nVal != -1 && i == 0)
+    {
+      _notches = new Node_int(nVal);
+    }
+    else if (nVal != -1)
+    {
+      auto end = _notches;
+      while (end->next != NULL) end = end->next;
+      auto n = new Node_int(nVal);
+      n->prev = end;
+      end->next = n;
+    }
+    else return false;
   }
 
   return true;
@@ -165,6 +212,16 @@ void Rotor::print()
   for (int i = 0; i < NUM_LETTERS; i++)
   {
     cerr << "{ " << i << " ; " << _mapping[i] << " }\n";
+  }
+  cerr << endl;
+}
+
+void Rotor::printNotches()
+{
+  cerr << "Rotor " << _index << " notches: ";
+  for (auto it = _notches; it != NULL; it = it->next)
+  {
+    cerr << it->val << " ";
   }
   cerr << endl;
 }

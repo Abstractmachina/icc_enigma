@@ -15,6 +15,7 @@ public:
   Reflector();
   Reflector(const char* refConfig);
 
+  void scramble(int& digit);
   int load(const char* refConfig);
   void print();
 

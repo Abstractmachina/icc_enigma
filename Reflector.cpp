@@ -15,6 +15,11 @@ Reflector::Reflector(const char* refConfig)
 }
 
 //FUNCTIONS
+void Reflector::scramble(int& digit)
+{
+  digit = _mapping[digit];
+}
+
 
 int Reflector::load(const char* refConfig)
 {

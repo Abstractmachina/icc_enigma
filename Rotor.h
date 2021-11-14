@@ -1,7 +1,19 @@
 #ifndef ROTOR_H
 #define ROTOR_H
 
-#include "structs.h"
+#include <fstream>
+#include <iostream>
+
+
+using namespace std;
+
+struct Node_int
+{
+  int val = -1;
+  Node_int* next = NULL;
+  Node_int* prev = NULL;
+  Node_int(int input) : val(input){}
+};
 
 class Rotor
 {
@@ -10,7 +22,8 @@ class Rotor
   int _mapping[26];
   int _startPos = 0;
   int _rotation = 0;
-  int* _notches = NULL;
+  Node_int* _notches = NULL;
+  //int _numNotches = 0;
 
   bool isInvalidMapping(int a[], int b[]);
   bool hasValidNumber(ifstream& in, int& counter);
@@ -18,10 +31,13 @@ class Rotor
 public:
   Rotor();
 
+  void scramble(int& digit, bool step, bool& isNotch);
   int load(char* rotConfig, char* startPos, int index);
   int loadStartPosition(char* startPosConfig, int index);
   bool loadNotches(ifstream& in, int const digitCounter);
+
   void print();
+  void printNotches();
 
   void setStartPos(int pos) { _startPos = pos; }
   void setIndex(int index){ if (index < 0) return;
@@ -29,7 +45,13 @@ public:
 
   ~Rotor()
   {
-    delete[] _notches;
+    for (auto it = _notches; it != NULL; it = it->next)
+    {
+      auto tmp = it;
+      delete it;
+      it = tmp->next;
+    }
+    //delete[] _notches;
   }
 
 };
