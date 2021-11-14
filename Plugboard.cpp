@@ -43,7 +43,7 @@ int Plugboard::load(const char* pbConfig)
       return 4;
     }
   }
-  if (count % 2 != 0 && count != 0)
+  if ( (count % 2 != 0 && count != 0) || count > 26)
   {
     cerr << "Incorrect number of parameters in plugboard file plugboard.pb" << endl;
     return 6;
