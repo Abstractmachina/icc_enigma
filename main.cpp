@@ -10,6 +10,12 @@ Enigma* enigma;
 
 int main(int argc, char** argv)
 {
+	//imsufficient amount of arguments
+	if (argc < 3)
+	{
+		cerr << "usage: enigma plugboard-file reflector-file (<rotor-file>)* rotor-positions" << endl;
+		return 1;
+	}
 	enigma = new Enigma();
 
 	int loadStatus = enigma->load(argc, argv);

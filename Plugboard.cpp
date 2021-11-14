@@ -37,6 +37,11 @@ int Plugboard::load(const char* pbConfig)
     int temp = -1;
     in >> temp;
     if (temp != -1) count++;
+    if (in.fail() && !in.eof())
+    {
+      cerr << "Non-numeric character in plugboard file plugboard.pb" << endl;
+      return 2;
+    }
   }
   if (count % 2 != 0 && count != 0)
   {
