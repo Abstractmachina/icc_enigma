@@ -9,26 +9,38 @@
 
 class Enigma
 {
+private:
   Plugboard* plugboard;
   Reflector* reflector;
   Rotor* _rotors;
   int _numRotors = 0;
   string _inputText = "";
 
+  /*Setup functions*/
+  int cleanInputText(istream& cin, string& message);
+  /*Encryption functions*/
   int encryptChar(char& c);
+  void scramblePlugboard(int& digit);
+  void scrambleRotors_RL(int& digit);
+  void scrambleRotors_LR(int& digit);
+  void scrambleReflector(int& digit);
 
 public:
   //Constructors
   Enigma();
 
+  /*Setup functions*/
   int load(int argc, char** argv);
-  int encrypt(istream& cin, string& output);
-  int cleanInputText(istream& cin, string& message);
 
+  /*Encryption functions*/
+  int encrypt(istream& cin, string& output);
+
+  /*Utility functions*/
   void printPlugboard();
   void printReflector();
   void printRotors();
 
+  //Destructor
   ~Enigma()
   {
     delete plugboard;

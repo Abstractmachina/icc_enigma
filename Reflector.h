@@ -5,8 +5,8 @@
 
 class Reflector
 {
+private:
   static const int MAX_PAIR = 13;
-
   int _mapping[MAX_PAIR*2];
 
   bool checkInvalidMapping(int a[MAX_PAIR], int b[MAX_PAIR]);

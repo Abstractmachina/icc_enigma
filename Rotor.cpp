@@ -86,7 +86,7 @@ int Rotor::load(char* rotConfig, char* startPosConfig, int ind)
   }
 
   loadNotches(in, digitCounter);
-  printNotches();
+  //printNotches();
 
   in.close();
 
@@ -161,6 +161,8 @@ int Rotor::loadStartPosition(char* startPosConfig, int index)
   return 0;
 }
 
+
+/***********  UTILITY FUNCTIONS *************************/
 bool Rotor::hasValidNumber(ifstream& in, int& digitCounter)
 {
   digitCounter = 0;

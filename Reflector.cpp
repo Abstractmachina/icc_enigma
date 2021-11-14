@@ -25,7 +25,7 @@ int Reflector::load(const char* refConfig)
 {
   ifstream in(refConfig);
   if (!in) {
-    cerr << "Loading reflector config failed!\n";
+    cerr << "Reflector::Loading reflector config failed!\n";
     return 11;
   }
 
@@ -39,7 +39,7 @@ int Reflector::load(const char* refConfig)
   }
   if (count != MAX_PAIR*2)
   {
-    cerr << "Invalid number of pairs!\n";
+    cerr << "Reflector::Invalid number of input digits!\n";
     return 10;
   }
   in.clear();                 // clear fail and eof bits
@@ -57,7 +57,7 @@ int Reflector::load(const char* refConfig)
     //check for invalid index
     if (val < 0 || val > 25)
     {
-      cerr << "Invalid Index!\n";
+      cerr << "Reflector::Invalid Index!\n";
       return 3;
     }
 
@@ -94,13 +94,13 @@ bool Reflector::checkInvalidMapping(int a[MAX_PAIR], int b[MAX_PAIR])
         if (a[j] == i || b[j] == i) count++;
         if (a[j] == b[j]) //if it maps to itself
         {
-          cerr << "Invalid reflector mapping!\n";
+          cerr << "Reflector::Invalid reflector mapping!\n";
           return true;
         }
     }
     if (count != 1) //if there is duplicate mapping
     {
-      cerr << "Invalid reflector mapping!\n";
+      cerr << "Reflector::Invalid reflector mapping!\n";
       return true;
     }
   }

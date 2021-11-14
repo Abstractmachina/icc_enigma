@@ -23,7 +23,7 @@ int main(int argc, char** argv)
 	int encryptionStatus = enigma->encrypt(cin, out);
 	if (encryptionStatus != 0) return encryptionStatus;
 
-	cerr << "Output: " << out << endl;
+	//cerr << "Output: " << out << endl;
 	cout << out;
 
 	return 0;
