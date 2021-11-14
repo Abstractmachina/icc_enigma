@@ -40,12 +40,12 @@ int Plugboard::load(const char* pbConfig)
     if (in.fail() && !in.eof())
     {
       cerr << "Non-numeric character in plugboard file plugboard.pb" << endl;
-      return 2;
+      return 4;
     }
   }
   if (count % 2 != 0 && count != 0)
   {
-    cerr << "INCORRECT NUMBER OF PLUGBOARD PARAMETERS\n";
+    cerr << "Incorrect number of parameters in plugboard file plugboard.pb" << endl;
     return 6;
   }
   in.clear();                 // clear fail and eof bits
