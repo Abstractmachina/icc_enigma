@@ -147,6 +147,13 @@ int Rotor::loadStartPosition(char* startPosConfig, int index)
     cerr << "Loading start position config failed!\n";
     return 11;
   }
+
+  if (in.peek() == std::ifstream::traits_type::eof())
+  {
+    cerr << "No starting position for rotor 0 in rotor position file: rotor.pos\n";
+    return 8;
+  }
+
   int startPos = -1;
   for (int i = 0; i <= index; i++)
   {
@@ -159,7 +166,7 @@ int Rotor::loadStartPosition(char* startPosConfig, int index)
   }
   if (startPos == -1)
   {
-    cerr << "No rotor starting position found!" << endl;
+    cerr << "No starting position for rotor 0 in rotor position file: rotor.pos" << endl;
     return 8;
   }
   in.close();
