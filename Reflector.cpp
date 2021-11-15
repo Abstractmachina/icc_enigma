@@ -36,12 +36,24 @@ int Reflector::load(const char* refConfig)
     int temp = -1;
     in >> temp;
     if (temp != -1) count++;
+
+    if (in.fail() && !in.eof())
+    {
+      cerr<< "Non-numeric character in reflector file reflector.rf" << endl;
+      return 4;
+    }
   }
-  if (count != MAX_PAIR*2)
+  if (count < MAX_PAIR*2 && count % 2 == 0)
   {
-    cerr << "Reflector::Invalid number of input digits!\n";
+    cerr << "Insufficient number of mappings in reflector file: reflector.rf\n";
     return 10;
   }
+  else if (count % 2 != 0)
+  {
+    cerr << "Incorrect (odd) number of parameters in reflector file reflector.rf\n";
+    return 10;
+  }
+
   in.clear();                 // clear fail and eof bits
   in.seekg(0, std::ios::beg); // back to the start!
 

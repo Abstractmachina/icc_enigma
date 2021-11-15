@@ -66,15 +66,14 @@ int Rotor::load(char* rotConfig, char* startPosConfig, int ind)
     in >> val;
 
     //check for invalid type
-    if (in.fail())
+    if (in.fail() && !in.eof())
     {
       //TODO check error handling
-      cerr << "NON_NUMERIC_CHARACTER\n";
-      in.close();
+      cerr << "Non-numeric character for mapping in rotor file rotor.rot\n";
       return 4;
     }
     //check for invalid index
-    if (val < 0 || val >= NUM_LETTERS)
+    if (val < 0 || val >= NUM_LETTERS - 1)
     {
       cerr << "Invalid Index!\n";
       return 3;
@@ -83,6 +82,8 @@ int Rotor::load(char* rotConfig, char* startPosConfig, int ind)
     if (i == 0) index[0] = val;
     else if (i % 2 == 0) index[i/2] = val;
     else value[(i-1) / 2] = val;
+
+    //_mapping[i] = val;
   }
 
   loadNotches(in, digitCounter);
@@ -149,6 +150,11 @@ int Rotor::loadStartPosition(char* startPosConfig, int index)
   for (int i = 0; i <= index; i++)
   {
     in >> startPos;
+    if (in.fail() && !in.eof())
+    {
+      cerr << "Non-numeric character in rotor positions file rotor.pos\n";
+      return 4;
+    }
   }
   if (startPos == -1)
   {
@@ -163,7 +169,7 @@ int Rotor::loadStartPosition(char* startPosConfig, int index)
 
 
 /***********  UTILITY FUNCTIONS *************************/
-bool Rotor::hasValidNumber(ifstream& in, int& digitCounter)
+int Rotor::hasValidNumber(ifstream& in, int& digitCounter)
 {
   digitCounter = 0;
   while (!in.eof())
@@ -171,18 +177,24 @@ bool Rotor::hasValidNumber(ifstream& in, int& digitCounter)
     int temp = -1;
     in >> temp;
     if (temp != -1) digitCounter++;
+    if (in.fail() && !in.eof())
+    {
+      cerr << "Non-numeric character for mapping in rotor file rotor.rot\n";
+      return 4;
+    }
   }
+
   if (digitCounter < NUM_LETTERS)
   {
-    cerr << "Invalid number of digits!\n";
-    return false;
+    cerr << "Not all inputs mapped in rotor file: rotor.rot\n";
+    return 7;
   }
   in.clear();                 // clear fail and eof bits
   in.seekg(0, std::ios::beg); // back to the start!
-  return true;
+  return 0;
 }
 
-bool Rotor::isInvalidMapping(int a[], int b[])
+int Rotor::isInvalidMapping(int a[], int b[])
 {
   // check for invalid reflector mapping
   for (int i = 0; i < NUM_LETTERS; i++)

@@ -22,10 +22,12 @@ int Enigma::load(int argc, char** argv)
   /*LOAD ROTORS*/
   _numRotors = argc - 4; //-reflector, plugboard, startpos and filename
   _rotors = new Rotor[_numRotors];
+
   for (int i = 0; i < _numRotors; i++)
   {
     _rotors[i] = *(new Rotor());
-    _rotors[i].load(argv[i+3], argv[argc-1], i);
+    int rotorLoadStatus = _rotors[i].load(argv[i+3], argv[argc-1], i);
+    if (rotorLoadStatus != 0) return rotorLoadStatus;
   }
 
   return 0;

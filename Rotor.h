@@ -25,8 +25,8 @@ class Rotor
   Node_int* _notches = NULL;
   //int _numNotches = 0;
 
-  bool isInvalidMapping(int a[], int b[]);
-  bool hasValidNumber(ifstream& in, int& counter);
+  int isInvalidMapping(int a[], int b[]);
+  int hasValidNumber(ifstream& in, int& counter);
 
 public:
   Rotor();
