@@ -56,7 +56,9 @@ int Rotor::load(char* rotConfig, char* startPosConfig, int ind)
   }
 
   int digitCounter = 0; //
-  if (!hasValidNumber(in, digitCounter)) return 8;
+  
+  int validNumStatus = hasValidNumber(in, digitCounter);
+  if (validNumStatus != 0) return validNumStatus;
 
   int index[NUM_LETTERS/2];
   int value[NUM_LETTERS/2];
@@ -69,7 +71,7 @@ int Rotor::load(char* rotConfig, char* startPosConfig, int ind)
     if (in.fail() && !in.eof())
     {
       //TODO check error handling
-      cerr << "Non-numeric character for mapping in rotor file rotor.rot\n";
+      cerr << "A Non-numeric character for mapping in rotor file rotor.rot\n";
       return 4;
     }
     //check for invalid index
