@@ -26,7 +26,7 @@ int main(int argc, char** argv)
 	//enigma->printPlugboard();
 
 	string out = "";
-	int encryptionStatus = enigma->encrypt(cin, out);
+	int encryptionStatus = enigma->encrypt(cin, cout, out);
 	if (encryptionStatus != 0) return encryptionStatus;
 
 	//cerr << "Output: " << out << endl;

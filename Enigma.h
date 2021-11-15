@@ -17,7 +17,7 @@ private:
   string _inputText = "";
 
   /*Setup functions*/
-  int cleanInputText(istream& cin, string& message);
+  int cleanInputText(istream& cin, ostream& cout, string& message);
   /*Encryption functions*/
   int encryptChar(char& c);
   void scramblePlugboard(int& digit);
@@ -33,7 +33,7 @@ public:
   int load(int argc, char** argv);
 
   /*Encryption functions*/
-  int encrypt(istream& cin, string& output);
+  int encrypt(istream& cin, ostream& cout, string& output);
 
   /*Utility functions*/
   void printPlugboard();

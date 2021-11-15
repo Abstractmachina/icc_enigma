@@ -34,9 +34,9 @@ int Enigma::load(int argc, char** argv)
 }
 
 /*Main encryption function*/
-int Enigma::encrypt(istream& cin, string& output)
+int Enigma::encrypt(istream& cin, ostream& cout, string& output)
 {
-  int cleanStatus = cleanInputText(cin, output);
+  int cleanStatus = cleanInputText(cin, cout, output);
   if (cleanStatus != 0) return cleanStatus;
 
   //cerr << "Input: " << output <<endl;
@@ -112,7 +112,7 @@ void Enigma::scrambleReflector(int& digit)
 /************** UTILITY FUNCTIONS **********/
 
 
-int Enigma::cleanInputText(istream& cin, string& message)
+int Enigma::cleanInputText(istream& cin, ostream& cout, string& message)
 {
   for (auto c = cin.get(); !cin.eof();)
   {
@@ -123,8 +123,8 @@ int Enigma::cleanInputText(istream& cin, string& message)
 		}
     if (c < 65 || c > 90)
     {
-      cerr << message << endl;
-      //cerr << (char) c << " is not a valid input character (input characters must be upper case letters A-Z)!\n";
+      cout << message << endl;
+      cerr << (char) c << " is not a valid input character (input characters must be upper case letters A-Z)!\n";
       return 2;
     }
 		message += c;
