@@ -88,7 +88,8 @@ int Rotor::load(char* rotConfig, char* startPosConfig, int ind)
     //_mapping[i] = val;
   }
 
-  loadNotches(in, digitCounter);
+  int loadNotchStatus = loadNotches(in, digitCounter);
+  if (loadNotchStatus != 0) return loadNotchStatus;
 
   in.close();
 
@@ -112,7 +113,7 @@ int Rotor::load(char* rotConfig, char* startPosConfig, int ind)
 /*read notch parameters from config file and load into Rotor
 
 */
-bool Rotor::loadNotches(ifstream& in, int const digitCounter)
+int Rotor::loadNotches(ifstream& in, int const digitCounter)
 {
   int numNotches = digitCounter - NUM_LETTERS;
 
@@ -120,6 +121,12 @@ bool Rotor::loadNotches(ifstream& in, int const digitCounter)
   {
     int nVal = -1;
     in >> nVal;
+
+    if (in.fail() && !in.eof())
+    {
+      cerr << "Non-numeric character in rotor positions file rotor.pos\n";
+      return 4;
+    }
 
     if (nVal != -1 && i == 0)
     {
@@ -133,10 +140,9 @@ bool Rotor::loadNotches(ifstream& in, int const digitCounter)
       n->prev = end;
       end->next = n;
     }
-    else return false;
   }
 
-  return true;
+  return 0;
 }
 
 int Rotor::loadStartPosition(char* startPosConfig, int index)

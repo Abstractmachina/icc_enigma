@@ -123,7 +123,8 @@ int Enigma::cleanInputText(istream& cin, string& message)
 		}
     if (c < 65 || c > 90)
     {
-      cerr << (char) c << " is not a valid input character (input characters must be upper case letters A-Z)!\n";
+      cerr << message << endl;
+      //cerr << (char) c << " is not a valid input character (input characters must be upper case letters A-Z)!\n";
       return 2;
     }
 		message += c;

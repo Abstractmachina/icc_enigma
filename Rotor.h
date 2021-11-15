@@ -34,7 +34,7 @@ public:
   void scramble(int& digit, bool step, bool& isNotch);
   int load(char* rotConfig, char* startPos, int index);
   int loadStartPosition(char* startPosConfig, int index);
-  bool loadNotches(ifstream& in, int const digitCounter);
+  int loadNotches(ifstream& in, int const digitCounter);
 
   void print();
   void printNotches();
