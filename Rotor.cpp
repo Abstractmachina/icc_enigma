@@ -56,7 +56,7 @@ int Rotor::load(char* rotConfig, char* startPosConfig, int ind)
   }
 
   int digitCounter = 0; //
-  
+
   int validNumStatus = hasValidNumber(in, digitCounter);
   if (validNumStatus != 0) return validNumStatus;
 
@@ -75,9 +75,9 @@ int Rotor::load(char* rotConfig, char* startPosConfig, int ind)
       return 4;
     }
     //check for invalid index
-    if (val < 0 || val >= NUM_LETTERS - 1)
+    if (val < 0 || val >= NUM_LETTERS)
     {
-      cerr << "Invalid Index!\n";
+      cerr << "A Invalid Index!\n";
       return 3;
     }
 
@@ -89,7 +89,6 @@ int Rotor::load(char* rotConfig, char* startPosConfig, int ind)
   }
 
   loadNotches(in, digitCounter);
-  //printNotches();
 
   in.close();
 
