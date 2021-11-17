@@ -22,25 +22,26 @@ class Rotor
   int _startPos = 0;
   int _rotation = 0;
   Node_int* _notches = NULL;
-  //int _numNotches = 0;
 
   int isInvalidMapping(int a[], int b[]);
-  int checkValidNumbers(ifstream& in, int& counter);
+  int checkValidNumbers(ifstream& in);
 
 public:
   Rotor();
 
-  void scramble(int& digit, bool step, bool& isNotch);
+  void scramble(int& digit, bool step, bool& isNotch, bool reverse);
   int load(char* rotConfig, char* startPos, int index);
   int loadStartPosition(char* startPosConfig, int index);
-  int loadNotches(ifstream& in, int const digitCounter);
+  void createMapping(ifstream& in);
+
 
   void print();
   void printNotches();
-
   void setStartPos(int pos) { _startPos = pos; }
-  void setIndex(int index){ if (index < 0) return;
-    _index = index; }
+  void setIndex(int index){ if (index < 0) return;_index = index; }
+
+  //OBSOLETE
+  int loadNotches(ifstream& in, int const digitCounter);
 
   ~Rotor()
   {
@@ -50,7 +51,6 @@ public:
       delete it;
       it = tmp->next;
     }
-    //delete[] _notches;
   }
 
 };

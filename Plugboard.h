@@ -11,10 +11,6 @@ class Plugboard
 
   bool isInvalidMapping(int a[], int b[], int length);
 public:
-  Plugboard();
-  Plugboard(const char* pbConfig);
-
-  /*load number pairs from a config file*/
   int load(const char* pbConfig);
   void scramble(int& digit);
   void print();

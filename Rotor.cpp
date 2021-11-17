@@ -8,28 +8,41 @@ Rotor::Rotor() {}
 
 /*********  FUNCTIONS ***********/
 
-void Rotor::scramble(int& digit, bool step, bool& isNotch)
+void Rotor::scramble(int& digit, bool step, bool& notchHit, bool reverse)
 {
-  if (step) _rotation++; //step once
-  int translation = (digit + _startPos + _rotation);
+  if (step) _rotation++; //step once if notch hit or right most rotor
+  int translation = (digit + _startPos + _rotation); //offset
   if (translation > NUM_LETTERS - 1 ) translation %= NUM_LETTERS;
 
   //check for notches;
-  isNotch = false;
+  notchHit = false;
   if (_notches != NULL)
   {
     for (auto it = _notches; it != NULL; it = it->next)
     {
       if (translation == it->val)
       {
-        isNotch = true;
+        notchHit = true;
         break;
       }
     }
   }
-  //scramble
-  digit = _mapping[translation];
 
+  //scramble
+  //right to left
+  if (!reverse)
+    digit = _mapping[translation];
+  // left to right
+  else
+  {
+    for (int i = 0; i < NUM_LETTERS; i++)
+    {
+      if (_mapping[i] == translation)
+      {
+        digit = i;
+      }
+    }
+  }
   //offset back to correct position
   digit -= _rotation + _startPos;
   //loop backward to get to correct index;
@@ -52,13 +65,40 @@ int Rotor::load(char* rotConfig, char* startPosConfig, int ind)
   if (!in)
   {
     cerr << "Loading rotor config failed!\n";
-    throw 11;
+    throw ERROR_OPENING_CONFIGURATION_FILE;
   }
   //error checking
-  int digitCounter = 0; //stores number of digits in file to calc notches after
-  int validNumStatus = checkValidNumbers(in, digitCounter);
+  int validNumStatus = checkValidNumbers(in);
   if (validNumStatus != 0) return validNumStatus;
 
+  //assign mapping and notches
+  createMapping(in);
+  in.close();
+
+  /*check for invalid mapping -> if a number occurs
+  twice it means there is duplicate mapping*/
+  for (int i = 0; i < NUM_LETTERS; i++)
+  {
+    for (int j = i + 1; j < NUM_LETTERS; j++)
+    {
+        if (_mapping[i] == _mapping[j])
+        {
+          cerr << "Invalid mapping of input "
+          << j << " to output " << _mapping[j] << " (output " << _mapping[j] << " is already mapped to from input "<< i <<")\n";
+          throw INVALID_ROTOR_MAPPING;
+        }
+    }
+  }
+
+  //load start position
+  int sp = loadStartPosition(startPosConfig, ind);
+  if (sp != 0) return sp;
+
+  return NO_ERROR;
+}
+
+void Rotor::createMapping(ifstream& in)
+{
   //assign mapping and notches
   int counter = 0;
   while (!in.eof())
@@ -67,7 +107,7 @@ int Rotor::load(char* rotConfig, char* startPosConfig, int ind)
     in >> val;
     if (counter < NUM_LETTERS) //assign to mapping
       _mapping[counter] = val;
-    else //assign to notches
+    else if (counter >= NUM_LETTERS && val != -1) //assign to notches
     {
       if (_notches == NULL) _notches = new Node_int(val);
       else
@@ -80,78 +120,6 @@ int Rotor::load(char* rotConfig, char* startPosConfig, int ind)
     }
     counter++;
   }
-  in.close();
-
-  /*check for invalid mapping -> if a number occurs
-  twice it means there is duplicate mapping*/
-  for (int i = 0; i < NUM_LETTERS; i++)
-  {
-    for (int j = i+1; j < NUM_LETTERS; j++)
-    {
-        if (_mapping[i] == _mapping[j])
-        {
-          cerr << "Invalid mapping of input "
-          << j << " to output " << _mapping[j] << " (output " << _mapping[j] << " is already mapped to from input "<< i <<")\n";
-          throw INVALID_ROTOR_MAPPING;
-        }
-    }
-  }
-
-  //int loadNotchStatus = loadNotches(in, digitCounter);
-  //if (loadNotchStatus != 0) return loadNotchStatus;
-
-  //load start position
-  int sp = loadStartPosition(startPosConfig, ind);
-  if (sp != 0) return sp;
-
-  return NO_ERROR;
-
-  /*
-    int index[NUM_LETTERS/2];
-    int value[NUM_LETTERS/2];
-    for (int i = 0; i < NUM_LETTERS; i++)
-    {
-      int val = -1;
-      in >> val;
-
-      //check for invalid type
-      if (in.fail() && !in.eof())
-      {
-        //TODO check error handling
-        cerr << "Non-numeric character for mapping in rotor file rotor.rot\n";
-        return 4;
-      }
-      //check for invalid index
-      if (val < 0 || val >= NUM_LETTERS)
-      {
-        cerr << "Invalid Index!\n";
-        return 3;
-      }
-
-      if (i == 0) index[0] = val;
-      else if (i % 2 == 0) index[i/2] = val;
-      else value[(i-1) / 2] = val;
-
-    }
-
-    int loadNotchStatus = loadNotches(in, digitCounter);
-    if (loadNotchStatus != 0) return loadNotchStatus;
-
-    in.close();
-
-    if (isInvalidMapping(index, value)) return 7;
-
-    //translate to mapping
-    for (int i = 0; i < NUM_LETTERS/2; i++)
-    {
-      _mapping[index[i]] = value[i];
-      _mapping[value[i]] = index [i];
-    }
-
-    //load start position
-    int sp = loadStartPosition(startPosConfig, ind);
-    if (sp != 0) return sp;
-  */
 }
 
 int Rotor::loadStartPosition(char* startPosConfig, int index)
@@ -160,13 +128,13 @@ int Rotor::loadStartPosition(char* startPosConfig, int index)
   ifstream in(startPosConfig);
   if (!in) {
     cerr << "Loading start position config failed!\n";
-    return 11;
+    throw ERROR_OPENING_CONFIGURATION_FILE;
   }
 
   if (in.peek() == std::ifstream::traits_type::eof())
   {
     cerr << "No starting position for rotor 0 in rotor position file: rotor.pos\n";
-    return 8;
+    throw NO_ROTOR_STARTING_POSITION;
   }
 
   int startPos = -1;
@@ -176,22 +144,22 @@ int Rotor::loadStartPosition(char* startPosConfig, int index)
     if (in.fail() && !in.eof())
     {
       cerr << "Non-numeric character in rotor positions file rotor.pos\n";
-      return 4;
+      throw NON_NUMERIC_CHARACTER;
     }
   }
   if (startPos == -1)
   {
     cerr << "No starting position for rotor 0 in rotor position file: rotor.pos" << endl;
-    return 8;
+    throw NO_ROTOR_STARTING_POSITION;
   }
   in.close();
   _startPos = startPos;
 
-  return 0;
+  return NO_ERROR;
 }
 
 /*read notch parameters from config file and load into Rotor
-*/
+OBSOLETE */
 int Rotor::loadNotches(ifstream& in, int const digitCounter)
 {
   int numNotches = digitCounter - NUM_LETTERS;
@@ -225,9 +193,9 @@ int Rotor::loadNotches(ifstream& in, int const digitCounter)
 
 
 /***********  UTILITY FUNCTIONS *************************/
-int Rotor::checkValidNumbers(ifstream& in, int& digitCounter)
+int Rotor::checkValidNumbers(ifstream& in)
 {
-  digitCounter = 0;
+  int digitCounter = 0;
   while (!in.eof())
   {
     int val;

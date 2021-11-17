@@ -8,11 +8,10 @@ Enigma::Enigma(){}
 
 int Enigma::load(int argc, char** argv)
 {
-
   /*LOAD PLUGBOARD*/
   plugboard = new Plugboard();
   int pbStatus = plugboard->load(argv[1]);
-  if (pbStatus != 0) return pbStatus;
+  //if (pbStatus != 0) return pbStatus;
 
   /*LOAD REFLECTOR*/
   reflector = new Reflector();
@@ -22,7 +21,6 @@ int Enigma::load(int argc, char** argv)
   /*LOAD ROTORS*/
   _numRotors = argc - 4; //-reflector, plugboard, startpos and filename
   _rotors = new Rotor[_numRotors];
-
   for (int i = 0; i < _numRotors; i++)
   {
     _rotors[i] = *(new Rotor());
@@ -33,13 +31,14 @@ int Enigma::load(int argc, char** argv)
   return 0;
 }
 
-/*Main encryption function*/
+/***********  Main encryption functions ************************/
 int Enigma::encrypt(istream& cin, ostream& cout, string& output)
 {
   int cleanStatus = cleanInputText(cin, cout, output);
   if (cleanStatus != 0) return cleanStatus;
 
   for (auto i =0; i < (int)output.length(); i++) encryptChar(output[i]);
+  _outputText = output;
   return 0;
 }
 
@@ -75,11 +74,11 @@ void Enigma::scrambleRotors_RL(int& digit)
     {
       bool isNotch = false;
       if (i == _numRotors-1)
-        _rotors[i].scramble(digit, true, isNotch);//first rotor always steps
+        _rotors[i].scramble(digit, true, isNotch, false);//first rotor always steps
       else
       {
-        if (isNotch)_rotors[i].scramble(digit, true, isNotch);
-        else _rotors[i].scramble(digit, false, isNotch);
+        if (isNotch)_rotors[i].scramble(digit, true, isNotch, false);
+        else _rotors[i].scramble(digit, false, isNotch, false);
       }
       //cerr << "Rotor " << i << " scramble: " << digit << endl;
     }
@@ -93,7 +92,7 @@ void Enigma::scrambleRotors_LR(int& digit)
     for (int i = 0; i <_numRotors; i++)
     {
       bool dummyNotch = false;
-      _rotors[i].scramble(digit, false, dummyNotch);
+      _rotors[i].scramble(digit, false, dummyNotch, true);
       //cerr << "Rotor " << i << " scramble: " << digit << endl;
     }
   }
@@ -128,10 +127,16 @@ int Enigma::cleanInputText(istream& cin, ostream& cout, string& message)
 		message += c;
 		c = cin.get();
   }
+  _inputText = message;
 
   return 0;
 }
 
+void Enigma::printIO()
+{
+  cerr << "Input: " << _inputText << endl;
+  cerr << "Output: " << _outputText << endl;
+}
 void Enigma::printPlugboard() {plugboard->print(); }
 void Enigma::printReflector(){ reflector->print(); }
 void Enigma::printRotors() { for (int i = 0; i < _numRotors; i++) _rotors[i].print(); }

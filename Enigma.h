@@ -15,6 +15,7 @@ private:
   Rotor* _rotors;
   int _numRotors = 0;
   string _inputText = "";
+  string _outputText = "";
 
   /*Setup functions*/
   int cleanInputText(istream& cin, ostream& cout, string& message);
@@ -36,6 +37,7 @@ public:
   int encrypt(istream& cin, ostream& cout, string& output);
 
   /*Utility functions*/
+  void printIO(); //print input and output msg
   void printPlugboard();
   void printReflector();
   void printRotors();

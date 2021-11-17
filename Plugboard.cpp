@@ -4,16 +4,11 @@
 #include <string>
 
 #include "Plugboard.h"
-//#include "NumPair.h"
+#include "errors.h"
 
 using namespace std;
 
 //CONSTRUCTORS
-Plugboard::Plugboard(){}
-Plugboard::Plugboard(const char* pbConfig)
-{
-  load(pbConfig);
-}
 
 /*************FUNCTIONS****************/
 
@@ -28,6 +23,7 @@ int Plugboard::load(const char* pbConfig)
   ifstream in(pbConfig);
   if (!in) {
     cerr << "Loading plugboard failed!\n";
+    throw ERROR_OPENING_CONFIGURATION_FILE;
   }
 
   //check for even number of values -> pairs
@@ -36,17 +32,17 @@ int Plugboard::load(const char* pbConfig)
   {
     int temp = -1;
     in >> temp;
-    if (temp != -1) count++;
     if (in.fail() && !in.eof())
     {
       cerr << "Non-numeric character in plugboard file plugboard.pb" << endl;
-      return 4;
+      throw NON_NUMERIC_CHARACTER;
     }
+    if (temp != -1) count++;
   }
   if ( (count % 2 != 0 && count != 0) || count > 26)
   {
     cerr << "Incorrect number of parameters in plugboard file plugboard.pb" << endl;
-    return 6;
+    throw IMPOSSIBLE_PLUGBOARD_CONFIGURATION;
   }
   in.clear();                 // clear fail and eof bits
   in.seekg(0, std::ios::beg); // back to the start!
