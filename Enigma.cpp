@@ -39,8 +39,6 @@ int Enigma::encrypt(istream& cin, ostream& cout, string& output)
   int cleanStatus = cleanInputText(cin, cout, output);
   if (cleanStatus != 0) return cleanStatus;
 
-  //cerr << "Input: " << output <<endl;
-
   for (auto i =0; i < (int)output.length(); i++) encryptChar(output[i]);
   return 0;
 }

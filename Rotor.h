@@ -11,7 +11,6 @@ struct Node_int
 {
   int val = -1;
   Node_int* next = NULL;
-  Node_int* prev = NULL;
   Node_int(int input) : val(input){}
 };
 
@@ -26,7 +25,7 @@ class Rotor
   //int _numNotches = 0;
 
   int isInvalidMapping(int a[], int b[]);
-  int hasValidNumber(ifstream& in, int& counter);
+  int checkValidNumbers(ifstream& in, int& counter);
 
 public:
   Rotor();
