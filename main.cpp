@@ -25,16 +25,15 @@ int main(int argc, char** argv)
 		if (loadStatus != 0) return loadStatus;
 	} catch (int x) { cerr << "test catch: " << x << endl ;}
 
-
-	enigma->printRotors();
-	enigma->printReflector();
-	enigma->printPlugboard();
+	//enigma->printRotors();
+	//enigma->printReflector();
+	//enigma->printPlugboard();
 
 	string message = "";
 	int encryptionStatus = enigma->encrypt(cin, cout, message);
 	if (encryptionStatus != 0) return encryptionStatus;
 
-	enigma->printIO();
+	//enigma->printIO();
 	cout << message;
 
 	return 0;

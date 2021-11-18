@@ -10,7 +10,7 @@ int Enigma::load(int argc, char** argv)
 {
   /*LOAD PLUGBOARD*/
   plugboard = new Plugboard();
-  int pbStatus = plugboard->load(argv[1]);
+  //int pbStatus = plugboard->load(argv[1]);
   //if (pbStatus != 0) return pbStatus;
 
   /*LOAD REFLECTOR*/
@@ -78,7 +78,6 @@ void Enigma::scrambleRotors_RL(int& digit)
       {
         if (isNotch)
         {
-          cerr << "notch triggered\n";
           _rotors[i].scramble(digit, true, isNotch, false);
         }
         else _rotors[i].scramble(digit, false, isNotch, false);
