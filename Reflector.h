@@ -6,14 +6,13 @@
 class Reflector
 {
 private:
-  static const int MAX_PAIR = 13;
-  int _mapping[MAX_PAIR*2];
+  static const int NUM_LETTERS = 26;
+  int _mapping[NUM_LETTERS];
 
-  bool checkInvalidMapping(int a[MAX_PAIR], int b[MAX_PAIR]);
+  bool checkValidMapping();
 
 public:
   Reflector();
-  Reflector(const char* refConfig);
 
   void scramble(int& digit);
   int load(const char* refConfig);

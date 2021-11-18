@@ -3,16 +3,12 @@
 #include <cstdio>
 
 #include "Reflector.h"
+#include "errors.h"
 
 using namespace std;
 
 /*************  CONSTRUCTORS  *************/
 Reflector::Reflector(){}
-Reflector::Reflector(const char* refConfig)
-{
-  //for (int i = 0; i < 26; i++) _mapping[i] = i;
-  load(refConfig);
-}
 
 //FUNCTIONS
 void Reflector::scramble(int& digit)
@@ -35,15 +31,23 @@ int Reflector::load(const char* refConfig)
   {
     int temp = -1;
     in >> temp;
-    if (temp != -1) count++;
 
     if (in.fail() && !in.eof())
     {
       cerr<< "Non-numeric character in reflector file reflector.rf" << endl;
       return 4;
     }
+    if (temp == -1) break; //end of file
+    //check for invalid index
+    if (temp < 0 || temp > 25)
+    {
+      cerr << "Reflector::Invalid Index!\n";
+      return 3;
+    }
+    if (temp != -1) count++;
   }
-  if (count < MAX_PAIR*2 && count % 2 == 0)
+
+  if (count < NUM_LETTERS && count % 2 == 0)
   {
     cerr << "Insufficient number of mappings in reflector file: reflector.rf\n";
     return 10;
@@ -57,37 +61,19 @@ int Reflector::load(const char* refConfig)
   in.clear();                 // clear fail and eof bits
   in.seekg(0, std::ios::beg); // back to the start!
 
-  int index[MAX_PAIR];
-  int value[MAX_PAIR];
-
-  //assign pairs
-  for (int i = 0; i < MAX_PAIR*2; i++)
+  for (int i =0; i < NUM_LETTERS/2; i++)
   {
-    int val;
-    in >> val;
+    int A = -1;
+    int B = -1;
+    in >> A;
+    in >> B;
 
-    //check for invalid index
-    if (val < 0 || val > 25)
-    {
-      cerr << "Reflector::Invalid Index!\n";
-      return 3;
-    }
-
-    if (i == 0) index[0] = val;
-    else if (i % 2 == 0) index[i/2] = val;
-    else value[(i-1) / 2] = val;
+    _mapping[A] = B;
+    _mapping[B] = A;
   }
-
-  if(checkInvalidMapping(index, value)) return 10;
-
-  //translate to mapping
-  for (int i = 0; i < MAX_PAIR; i++)
-  {
-    _mapping[index[i]] = value[i];
-    _mapping[value[i]] = index [i];
-  }
-
   in.close();
+
+  checkValidMapping();
 
   return 0;
 }
@@ -95,25 +81,22 @@ int Reflector::load(const char* refConfig)
 
 /*Check if any number is mapped to itself or multiple times,
 */
-bool Reflector::checkInvalidMapping(int a[MAX_PAIR], int b[MAX_PAIR])
+bool Reflector::checkValidMapping()
 {
   // check for invalid reflector mapping
-  for (int i = 0; i < MAX_PAIR*2; i++)
+  for (int i = 0; i < NUM_LETTERS-1; i++)
   {
-    int count = 0;
-    for (int j = 0; j < MAX_PAIR; j++)
+    if (_mapping[i] == i)
     {
-        if (a[j] == i || b[j] == i) count++;
-        if (a[j] == b[j]) //if it maps to itself
-        {
-          cerr << "Reflector::Invalid reflector mapping!\n";
-          return true;
-        }
+      throw INVALID_REFLECTOR_MAPPING;
     }
-    if (count != 1) //if there is duplicate mapping
+    for (int j = i + 1; j < NUM_LETTERS; j++)
     {
-      cerr << "Reflector::Invalid reflector mapping!\n";
-      return true;
+      //if duplicate mapping
+        if (_mapping[i] == _mapping[j])
+        {
+          throw INVALID_REFLECTOR_MAPPING;
+        }
     }
   }
   return false;
@@ -122,7 +105,7 @@ bool Reflector::checkInvalidMapping(int a[MAX_PAIR], int b[MAX_PAIR])
 void Reflector::print()
 {
   cerr << "Reflector Mapping:\n";
-  for (int i = 0; i < MAX_PAIR*2; i++)
+  for (int i = 0; i < NUM_LETTERS; i++)
   {
     cerr << "{ " << i << " ; " << _mapping[i] << " }\n";
   }

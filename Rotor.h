@@ -17,23 +17,22 @@ struct Node_int
 class Rotor
 {
   static const int NUM_LETTERS = 26;
-  int _index = -1;
+  int _index = -1; //rotor index within assembly. left-most = 0;
   int _mapping[26];
   int _startPos = 0;
   int _rotation = 0;
   Node_int* _notches = NULL;
 
-  int isInvalidMapping(int a[], int b[]);
+  /*check if numbers are integers and between 0-25
+   and whether all inputs are mapped.*/
   int checkValidNumbers(ifstream& in);
 
 public:
   Rotor();
-
-  void scramble(int& digit, bool step, bool& isNotch, bool reverse);
   int load(char* rotConfig, char* startPos, int index);
   int loadStartPosition(char* startPosConfig, int index);
   void createMapping(ifstream& in);
-
+  void scramble(int& digit, bool step, bool& isNotch, bool reverse);
 
   void print();
   void printNotches();
@@ -42,6 +41,7 @@ public:
 
   //OBSOLETE
   int loadNotches(ifstream& in, int const digitCounter);
+  int isInvalidMapping(int a[], int b[]);
 
   ~Rotor()
   {

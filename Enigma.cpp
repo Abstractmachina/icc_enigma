@@ -19,7 +19,7 @@ int Enigma::load(int argc, char** argv)
   if (refStatus != 0) return refStatus;
 
   /*LOAD ROTORS*/
-  _numRotors = argc - 4; //-reflector, plugboard, startpos and filename
+  _numRotors = argc - 4; //subtract pb, ref, exe name, start pos
   _rotors = new Rotor[_numRotors];
   for (int i = 0; i < _numRotors; i++)
   {
@@ -62,7 +62,6 @@ int Enigma::encryptChar(char& c)
 void Enigma::scramblePlugboard(int& digit)
 {
   plugboard->scramble(digit);
-  //cerr << "pb scramble: " << digit << endl;
 }
 
 void Enigma::scrambleRotors_RL(int& digit)
@@ -70,17 +69,20 @@ void Enigma::scrambleRotors_RL(int& digit)
   /*ROTORS SCRAMBLE RIGHT TO LEFT*/
   if (_rotors != NULL)
   {
+    bool isNotch = false;
     for (int i = _numRotors-1; i >= 0; i--)
     {
-      bool isNotch = false;
-      if (i == _numRotors-1)
+      if (i == _numRotors-1) //rightmost rotor
         _rotors[i].scramble(digit, true, isNotch, false);//first rotor always steps
       else
       {
-        if (isNotch)_rotors[i].scramble(digit, true, isNotch, false);
+        if (isNotch)
+        {
+          cerr << "notch triggered\n";
+          _rotors[i].scramble(digit, true, isNotch, false);
+        }
         else _rotors[i].scramble(digit, false, isNotch, false);
       }
-      //cerr << "Rotor " << i << " scramble: " << digit << endl;
     }
   }
 }
@@ -91,7 +93,7 @@ void Enigma::scrambleRotors_LR(int& digit)
   {
     for (int i = 0; i <_numRotors; i++)
     {
-      bool dummyNotch = false;
+      bool dummyNotch = false; //notch is never engage in reverse
       _rotors[i].scramble(digit, false, dummyNotch, true);
       //cerr << "Rotor " << i << " scramble: " << digit << endl;
     }

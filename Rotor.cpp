@@ -3,8 +3,7 @@
 
 using namespace std;
 
-/************ CONSTRUCTORS  *******/
-Rotor::Rotor() {}
+Rotor::Rotor(){}
 
 /*********  FUNCTIONS ***********/
 
@@ -236,6 +235,7 @@ int Rotor::checkValidNumbers(ifstream& in)
   return 0;
 }
 
+//OBSOLETE
 int Rotor::isInvalidMapping(int a[], int b[])
 {
   for (int left = 0; left < NUM_LETTERS/2; left++) {
