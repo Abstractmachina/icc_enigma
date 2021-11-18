@@ -10,6 +10,8 @@
 class Enigma
 {
 private:
+  const int ASCII_A = 65;
+  const int ASCII_Z = 90;
   Plugboard* plugboard;
   Reflector* reflector;
   Rotor* _rotors;

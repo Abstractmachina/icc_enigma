@@ -30,8 +30,10 @@ int Plugboard::load(const char* pbConfig)
   int count = 0; //count of number found in config file.
   checkValidNumbers(in, count);
 
+  cerr << "pb digit count: " << count << endl;
   //init mapping
   for (int i = 0; i < LETTER_COUNT; i++)_mapping[i] = i;
+  //map pairs
   for (int i = 0; i < count/2; i++) //
   {
     int A = -1;
@@ -46,43 +48,6 @@ int Plugboard::load(const char* pbConfig)
   in.close();
 
   return 0;
-/*
-  //assign pairs
-  int index[count/2];
-  int value[count/2];
-  for (int i = 0; i < count; i++)
-  {
-    int val;
-    in >> val;
-
-    //check for invalid index
-    if (val < 0 || val > 25)
-    {
-      cerr << "Invalid Index!\n";
-      return 3;
-    }
-
-    if (i == 0) index[0] = val;
-    else if (i % 2 == 0) index[i/2] = val;
-    else value[(i-1) / 2] = val;
-  }
-
-  in.close();
-
-  if(isInvalidMapping(index, value, count/2)) return 10;
-
-  //translate to mapping
-  //init standard mapping
-  for (int i = 0; i < LETTER_COUNT; i++) _mapping[i] = i;
-  //assign new pairs
-  for (int i = 0; i < count/2; i++)
-  {
-    _mapping[index[i]] = value[i];
-    _mapping[value[i]] = index [i];
-  }
-
-  return 0;
-  */
 }
 
 void Plugboard::checkValidNumbers(ifstream& in, int& count)

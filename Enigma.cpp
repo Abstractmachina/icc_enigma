@@ -1,7 +1,12 @@
 #include <iostream>
 #include <string>
+#include <cstdio>
 
 #include "Enigma.h"
+#include "exceptions.h"
+#include "errors.h"
+
+using namespace std;
 
 Enigma::Enigma(){}
 
@@ -10,7 +15,7 @@ int Enigma::load(int argc, char** argv)
 {
   /*LOAD PLUGBOARD*/
   plugboard = new Plugboard();
-  //int pbStatus = plugboard->load(argv[1]);
+  int pbStatus = plugboard->load(argv[1]);
   //if (pbStatus != 0) return pbStatus;
 
   /*LOAD REFLECTOR*/
@@ -45,7 +50,7 @@ int Enigma::encrypt(istream& cin, ostream& cout, string& output)
 int Enigma::encryptChar(char& c)
 {
   //cerr << "Char: " << c<< endl;
-  int digit = c - 65;
+  int digit = c - ASCII_A;
 
   scramblePlugboard(digit);
   scrambleRotors_RL(digit);
@@ -54,7 +59,7 @@ int Enigma::encryptChar(char& c)
   scramblePlugboard(digit);
 
   //convert back to char
-  c = digit + 65;
+  c = digit + ASCII_A;
 
   return 0;
 }
@@ -119,11 +124,12 @@ int Enigma::cleanInputText(istream& cin, ostream& cout, string& message)
 			c = cin.get();
 			continue;
 		}
-    if (c < 65 || c > 90)
+
+    if (c < ASCII_A || c > ASCII_Z)
     {
-      cout << message << endl;
+      //cout << message << endl;
       cerr << (char) c << " is not a valid input character (input characters must be upper case letters A-Z)!\n";
-      return 2;
+      throw INVALID_INPUT_CHARACTER;
     }
 		message += c;
 		c = cin.get();
