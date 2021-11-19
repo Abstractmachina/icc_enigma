@@ -19,7 +19,7 @@ void Rotor::scramble(int& digit, bool step, bool& notchHit, bool reverse)
   {
     for (auto it = _notches; it != NULL; it = it->next)
     {
-      if (translation == it->val)
+      if ((_startPos + _rotation) == it->val)
       {
         notchHit = true;
         break;
