@@ -30,7 +30,6 @@ int Plugboard::load(const char* pbConfig)
   int count = 0; //count of number found in config file.
   checkValidNumbers(in, count);
 
-  cerr << "pb digit count: " << count << endl;
   //init mapping
   for (int i = 0; i < LETTER_COUNT; i++)_mapping[i] = i;
   //map pairs

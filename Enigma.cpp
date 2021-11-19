@@ -3,7 +3,6 @@
 #include <cstdio>
 
 #include "Enigma.h"
-#include "exceptions.h"
 #include "errors.h"
 
 using namespace std;
@@ -15,7 +14,7 @@ int Enigma::load(int argc, char** argv)
 {
   /*LOAD PLUGBOARD*/
   plugboard = new Plugboard();
-  int pbStatus = plugboard->load(argv[1]);
+  plugboard->load(argv[1]);
   //if (pbStatus != 0) return pbStatus;
 
   /*LOAD REFLECTOR*/
