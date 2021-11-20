@@ -20,12 +20,6 @@ public:
   int load(const char* pbConfig);
   void scramble(int& digit);
   void print(); // Remove at the end. LC
-
-  ~Plugboard();
-
-
-  //OBSOLETE FUN
-    bool isInvalidMapping(int a[], int b[], int length);
 };
 
 #endif

@@ -81,7 +81,7 @@ int Plugboard::checkValidNumbers(ifstream& in, int& count)
   if ( (count % 2 != 0 && count != 0) || count > 26)
   {
     cerr << "Incorrect number of parameters in plugboard file plugboard.pb" << endl;
-    return IMPOSSIBLE_PLUGBOARD_CONFIGURATION;
+    return INCORRECT_NUMBER_OF_PLUGBOARD_PARAMETERS;
   }
 
   in.clear();                 // clear fail and eof bits
@@ -123,59 +123,6 @@ int Plugboard::checkValidMapping()
   return 0;
 }
 
-//OBSOLETE
-/*Check if any numbers are mapped to themselves or multiple times.*/
-bool Plugboard::isInvalidMapping(int a[], int b[], int length)
-{
-  for (int i = 0; i < length; i++)
-  {
-    auto left = a[i]; //value to compare
-    //check left hand side
-    for (int j = 0; j < length; j++)
-    {
-      if (i != j)
-      {
-        if (left == a[j])
-        {
-          cerr << "Invalid plugboard mapping!\n";
-          return true;
-        }
-      }
-    }
-    //check right hand side
-    for (int j = 0; j < length; j++)
-    {
-      if (left == b[j])
-      {
-        cerr << "Invalid plugboard mapping!\n";
-        return true;
-      }
-    }
-    auto right = b[i]; //value to compare
-    //check left hand side
-    for (int j = 0; j < length; j++)
-    {
-      if (right == a[j])
-      {
-        cerr << "Invalid plugboard mapping!\n";
-        return true;
-      }
-    }
-    //check right hand side
-    for (int j = 0; j < length; j++)
-    {
-      if (i != j)
-      {
-        if (right == b[j])
-        {
-          cerr << "Invalid plugboard mapping!\n";
-          return true;
-        }
-      }
-    }
-  }
-  return false;
-}
 
 // Make sure ti=o remove function at end. LC
 void Plugboard::print(){
@@ -185,10 +132,4 @@ void Plugboard::print(){
     cerr << "{ " << i << " ; " << _mapping[i] << " }\n";
   }
   cerr << endl;
-}
-
-/***********************DESTRUCTOR**************************/
-Plugboard::~Plugboard()
-{
-
 }
