@@ -15,17 +15,13 @@ int main(int argc, char** argv)
 	if (argc < 4)
 	{
 		cerr << "usage: enigma plugboard-file reflector-file (<rotor-file>)* rotor-positions" << endl;
-		return 2;
+		return INSUFFICIENT_NUMBER_OF_PARAMETERS; // Change number to name specified in error.h LC
 	}
 
 	enigma = new Enigma();
 
-	try{
-		enigma->load(argc, argv);
-		//if (loadStatus != 0) return loadStatus;
-	} catch (int const errorCode){
-		return errorCode;
-	}
+	int loadStatus = enigma->load(argc, argv);
+	if (loadStatus != 0) return loadStatus;
 
 	//enigma->printRotors();
 	//enigma->printReflector();

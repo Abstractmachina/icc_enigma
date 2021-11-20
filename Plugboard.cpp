@@ -11,7 +11,7 @@ using namespace std;
 //CONSTRUCTORS
 
 /*************FUNCTIONS****************/
-
+//What does this function do? LC
 void Plugboard::scramble(int& digit)
 {
   digit = _mapping[digit];
@@ -23,33 +23,27 @@ int Plugboard::load(const char* pbConfig)
   ifstream in(pbConfig);
   if (!in) {
     cerr << "Loading plugboard failed!\n";
-    throw ERROR_OPENING_CONFIGURATION_FILE;
+    return ERROR_OPENING_CONFIGURATION_FILE;
   }
 
   //check for even number of values -> pairs
   int count = 0; //count of number found in config file.
-  checkValidNumbers(in, count);
+  int validNumStatus = checkValidNumbers(in, count);
+  if (validNumStatus != 0) return validNumStatus;
 
-  //init mapping
-  for (int i = 0; i < LETTER_COUNT; i++)_mapping[i] = i;
-  //map pairs
-  for (int i = 0; i < count/2; i++) //
-  {
-    int A = -1;
-    int B = -1;
-    in >> A;
-    in >> B;
-
-    _mapping[A] = B;
-    _mapping[B] = A;
-  }
+  createMapping(in, count);
 
   in.close();
+
+  //check if closing file was successful. LC
+
+  int validMappingStatus = checkValidMapping();
+  if (validMappingStatus != 0) return validMappingStatus;
 
   return 0;
 }
 
-void Plugboard::checkValidNumbers(ifstream& in, int& count)
+int Plugboard::checkValidNumbers(ifstream& in, int& count)
 {
   count = 0;
   int first = -1; // store first letter to compare with second of pair
@@ -61,14 +55,14 @@ void Plugboard::checkValidNumbers(ifstream& in, int& count)
     if (in.fail() && !in.eof())
     {
       cerr << "Non-numeric character in plugboard file plugboard.pb" << endl;
-      throw NON_NUMERIC_CHARACTER;
+      return NON_NUMERIC_CHARACTER;
     }
     if (temp == -1) break; // end of file
 
     if (temp < 0 || temp > 25)
     {
       cerr << "Invalid Index in plugboard config!\n";
-      throw INVALID_INDEX;
+      return INVALID_INDEX;
 
     }
     //check if number maps to itself;
@@ -78,7 +72,7 @@ void Plugboard::checkValidNumbers(ifstream& in, int& count)
       if (first == temp)
       {
         cerr << "Number maps to itself in plugboard file plugboard.pb" << endl;
-        throw IMPOSSIBLE_PLUGBOARD_CONFIGURATION;
+        return IMPOSSIBLE_PLUGBOARD_CONFIGURATION;
       }
     }
     if (temp != -1) count++;
@@ -87,14 +81,33 @@ void Plugboard::checkValidNumbers(ifstream& in, int& count)
   if ( (count % 2 != 0 && count != 0) || count > 26)
   {
     cerr << "Incorrect number of parameters in plugboard file plugboard.pb" << endl;
-    throw IMPOSSIBLE_PLUGBOARD_CONFIGURATION;
+    return IMPOSSIBLE_PLUGBOARD_CONFIGURATION;
   }
 
   in.clear();                 // clear fail and eof bits
   in.seekg(0, std::ios::beg); // back to the start!
+
+  return NO_ERROR;
 }
 
-void Plugboard::checkValidMapping()
+void Plugboard::createMapping(ifstream& in, int numDigits)
+{
+  //init with standard mapping
+  for (int i = 0; i < LETTER_COUNT; i++)_mapping[i] = i;
+  //map pairs
+  for (int i = 0; i < numDigits/2; i++) //
+  {
+    int A = -1;
+    int B = -1;
+    in >> A;
+    in >> B;
+
+    _mapping[A] = B;
+    _mapping[B] = A;
+  }
+}
+
+int Plugboard::checkValidMapping()
 {
   for (int i = 0; i < LETTER_COUNT - 1; i++)
   {
@@ -103,10 +116,11 @@ void Plugboard::checkValidMapping()
       if (_mapping[i] == _mapping[j])
       {
         cerr << "Duplicate mapping\n";
-        throw IMPOSSIBLE_PLUGBOARD_CONFIGURATION;
+        return IMPOSSIBLE_PLUGBOARD_CONFIGURATION;
       }
     }
   }
+  return 0;
 }
 
 //OBSOLETE
@@ -162,6 +176,8 @@ bool Plugboard::isInvalidMapping(int a[], int b[], int length)
   }
   return false;
 }
+
+// Make sure ti=o remove function at end. LC
 void Plugboard::print(){
   cerr << "Plugboard Mapping:\n";
   for (int i = 0; i < LETTER_COUNT; i++)

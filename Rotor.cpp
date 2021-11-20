@@ -5,54 +5,7 @@ using namespace std;
 
 Rotor::Rotor(){}
 
-/*********  FUNCTIONS ***********/
-
-void Rotor::scramble(int& digit, bool step, bool& notchHit, bool reverse)
-{
-  if (step) _rotation++; //step once if notch hit or right most rotor
-  int translation = (digit + _startPos + _rotation); //offset
-  if (translation > NUM_LETTERS - 1 ) translation %= NUM_LETTERS;
-
-  //check for notches;
-  notchHit = false;
-  if (_notches != NULL)
-  {
-    for (auto it = _notches; it != NULL; it = it->next)
-    {
-      if ((_startPos + _rotation) == it->val)
-      {
-        notchHit = true;
-        break;
-      }
-    }
-  }
-
-  //scramble
-  //right to left
-  if (!reverse)
-    digit = _mapping[translation];
-  // left to right
-  else
-  {
-    for (int i = 0; i < NUM_LETTERS; i++)
-    {
-      if (_mapping[i] == translation)
-      {
-        digit = i;
-      }
-    }
-  }
-  //offset back to correct position
-  digit -= _rotation + _startPos;
-  //loop backward to get to correct index;
-  if (digit < 0)
-  {
-    while (digit < 0)
-    {
-      digit = NUM_LETTERS + digit;
-    }
-  }
-}
+/*********  SETUP FUNCTIONS ***********/
 
 /*Init rotor from configuration files. */
 int Rotor::load(char* rotConfig, char* startPosConfig, int ind)
@@ -157,37 +110,54 @@ int Rotor::loadStartPosition(char* startPosConfig, int index)
   return NO_ERROR;
 }
 
-/*read notch parameters from config file and load into Rotor
-OBSOLETE */
-int Rotor::loadNotches(ifstream& in, int const digitCounter)
+
+//********************  ENCRYPTION FUNCTIONS ****************/
+
+void Rotor::scramble(int& digit, bool step, bool& notchHit, bool reverse)
 {
-  int numNotches = digitCounter - NUM_LETTERS;
+  if (step) _rotation++; //step once if notch hit or right most rotor
+  int offset = _startPos + _rotation;
+  int translation = digit + offset; //offset
+  if (translation > NUM_LETTERS - 1 ) translation %= NUM_LETTERS;
 
-  for(int i = 0; i < numNotches && !in.eof(); i++)
+  //check for notches;
+  notchHit = false;
+  if (_notches != NULL)
   {
-    int nVal = -1;
-    in >> nVal;
-
-    if (in.fail() && !in.eof())
+    for (auto it = _notches; it != NULL; it = it->next)
     {
-      cerr << "Non-numeric character in rotor positions file rotor.pos\n";
-      return 4;
-    }
-
-    if (nVal != -1 && i == 0)
-    {
-      _notches = new Node_int(nVal);
-    }
-    else if (nVal != -1)
-    {
-      auto end = _notches;
-      while (end->next != NULL) end = end->next;
-      auto n = new Node_int(nVal);
-      end->next = n;
+      if (offset == it->val)
+      {
+        notchHit = true;
+        break;
+      }
     }
   }
 
-  return 0;
+  //scramble
+  //right to left
+  if (!reverse)
+    digit = _mapping[translation];
+  // left to right
+  else
+  {
+    for (int i = 0; i < NUM_LETTERS; i++)
+    {
+      if (_mapping[i] == translation)
+      {
+        digit = i;
+      }
+    }
+  }
+  digit -= offset;
+  //loop backward to get to correct index if value negative
+  if (digit < 0)
+  {
+    while (digit < 0)
+    {
+      digit = NUM_LETTERS + digit;
+    }
+  }
 }
 
 

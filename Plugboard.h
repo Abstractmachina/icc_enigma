@@ -12,13 +12,14 @@ private:
   static const int LETTER_COUNT = 26;
   int _mapping[LETTER_COUNT];
 
-  void checkValidNumbers(std::ifstream& in, int& count);
-  void checkValidMapping();
+  int checkValidNumbers(std::ifstream& in, int& count);
+  int checkValidMapping();
+  void createMapping(std::ifstream& in, int numDigits);
 
 public:
   int load(const char* pbConfig);
   void scramble(int& digit);
-  void print();
+  void print(); // Remove at the end. LC
 
   ~Plugboard();
 

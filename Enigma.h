@@ -42,7 +42,7 @@ public:
   void printIO(); //print input and output msg
   void printPlugboard();
   void printReflector();
-  void printRotors();
+  void printRotors(); //
 
   //Destructor
   ~Enigma()

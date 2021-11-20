@@ -14,8 +14,8 @@ int Enigma::load(int argc, char** argv)
 {
   /*LOAD PLUGBOARD*/
   plugboard = new Plugboard();
-  plugboard->load(argv[1]);
-  //if (pbStatus != 0) return pbStatus;
+  int pbStatus = plugboard->load(argv[1]);
+  if (pbStatus != 0) return pbStatus;
 
   /*LOAD REFLECTOR*/
   reflector = new Reflector();
@@ -43,7 +43,7 @@ int Enigma::encrypt(istream& cin, ostream& cout, string& output)
 
   for (auto i =0; i < (int)output.length(); i++) encryptChar(output[i]);
   _outputText = output;
-  return 0;
+  return 0; // Return NO_ERROR =. LC
 }
 
 int Enigma::encryptChar(char& c)
