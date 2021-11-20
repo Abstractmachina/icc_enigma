@@ -32,7 +32,7 @@ int Enigma::load(int argc, char** argv)
     if (rotorLoadStatus != 0) return rotorLoadStatus;
   }
 
-  return 0;
+  return NO_ERROR;
 }
 
 /***********  Encryption functions ************************/

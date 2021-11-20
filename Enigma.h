@@ -1,11 +1,20 @@
+/*-------------------------------------------------------
+                    Taole Chen 20 Nov 2021
+Enigma class contains all functional components (plugboard,
+reflector, rotors) of the enigma encryption machine
+developed in WWII.
+-processes input text from 
+
+
+---------------------------------------------------------*/
+
+
 #ifndef ENIGMA_H
 #define ENIGMA_H
 
 #include "Plugboard.h"
 #include "Reflector.h"
 #include "Rotor.h"
-
-#include <string>
 
 class Enigma
 {

@@ -97,7 +97,6 @@ int Rotor::loadStartPosition(char* startPosConfig, int index)
   in >> std::noskipws;
   while (in >> c)
   {
-    //cerr << c << endl;
     if (c != ' ')
     {
       if (!isdigit(c))
@@ -122,41 +121,6 @@ int Rotor::loadStartPosition(char* startPosConfig, int index)
   }
   in.close();
   return NO_ERROR;
-  /*
-  //load start position
-  ifstream in(startPosConfig);
-  if (!in) {
-    cerr << "Loading start position config failed!\n";
-    return ERROR_OPENING_CONFIGURATION_FILE;
-  }
-
-  if (in.peek() == std::ifstream::traits_type::eof())
-  {
-    cerr << "No starting position for rotor 0 in rotor position file: rotor.pos\n";
-    return NO_ROTOR_STARTING_POSITION;
-  }
-
-  int startPos = -1;
-  for (int i = 0; i <= index; i++)
-  {
-    in >> startPos;
-    cerr << "notch " << i << ": " << startPos << endl;
-    if ((in.fail() && !in.eof()) || startPos == -1)
-    {
-      cerr << "Non-numeric character in rotor positions file rotor.pos\n";
-      return NON_NUMERIC_CHARACTER;
-    }
-  }
-  if (startPos == -1)
-  {
-    cerr << "No starting position for rotor 0 in rotor position file: rotor.pos" << endl;
-    return NO_ROTOR_STARTING_POSITION;
-  }
-  in.close();
-  _startPos = startPos;
-
-  return NO_ERROR;
-  */
 }
 
 
