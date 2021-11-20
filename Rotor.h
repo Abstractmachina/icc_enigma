@@ -3,6 +3,8 @@
 
 #include <fstream>
 #include <iostream>
+#include <sstream>
+#include <string>
 
 
 using namespace std;
@@ -39,9 +41,6 @@ public:
   void setStartPos(int pos) { _startPos = pos; }
   void setIndex(int index){ if (index < 0) return;_index = index; }
 
-  //OBSOLETE
-  int loadNotches(ifstream& in, int const digitCounter);
-  int isInvalidMapping(int a[], int b[]);
 
   ~Rotor()
   {

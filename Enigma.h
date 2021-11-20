@@ -21,7 +21,7 @@ private:
 
   /*Setup functions*/
 
-  int cleanInputText(istream& cin, ostream& cout, string& message);
+  int cleanInputText(istream& cin, ostream& cout, string& message); //!TODO OBSOLETE
   int checkValidChar(char c);
   /*Encryption functions*/
   void encryptChar(char& c);

@@ -35,7 +35,7 @@ int Enigma::load(int argc, char** argv)
   return 0;
 }
 
-/***********  Main encryption functions ************************/
+/***********  Encryption functions ************************/
 string Enigma::readInput(istream& cin)
 {
   string rawInput = "";
@@ -74,7 +74,6 @@ int Enigma::checkValidChar(char c)
     c = cin.get();
     return -1;
   }
-
   if (c < 'A' || c > 'Z')
   {
     cerr << (char) c << " is not a valid input character (input characters must be upper case letters A-Z)!\n";
@@ -105,10 +104,7 @@ void Enigma::encryptChar(char& c)
   c = digit + 'A';//convert back to char
 }
 
-void Enigma::scramblePlugboard(int& digit)
-{
-  plugboard->scramble(digit);
-}
+void Enigma::scramblePlugboard(int& digit) {plugboard->scramble(digit);}
 
 void Enigma::scrambleRotors_RL(int& digit)
 {
@@ -145,15 +141,12 @@ void Enigma::scrambleRotors_LR(int& digit)
   }
 }
 
-void Enigma::scrambleReflector(int& digit)
-{
-  reflector->scramble(digit);
-  //cerr << "ref scramble: " << digit << endl;
-}
+void Enigma::scrambleReflector(int& digit) {reflector->scramble(digit);}
 
 
 /************** UTILITY FUNCTIONS **********/
 
+//OBSOLETE
 int Enigma::cleanInputText(istream& cin, ostream& cout, string& message)
 {
   for (auto c = cin.get(); !cin.eof();)

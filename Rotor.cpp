@@ -91,10 +91,53 @@ int Rotor::loadStartPosition(char* startPosConfig, int index)
     return NO_ROTOR_STARTING_POSITION;
   }
 
+  string word = "";
+  char c;
+  int count = 0;
+  in >> std::noskipws;
+  while (in >> c)
+  {
+    if (c != ' ')
+    {
+      if (!isdigit(c))
+      {
+        cerr << "Non-numeric character in rotor positions file rotor.pos\n";
+        return NON_NUMERIC_CHARACTER;
+      }
+      else word += c;
+    }
+    else
+    {
+      //cerr << "notch read: " << word << endl;
+      if (count == _index)
+      {
+        int startPos = std::stoi(word);
+        _startPos = startPos;
+      }
+      word = "";
+      count++;
+    }
+  }
+  return NO_ERROR;
+  /*
+  //load start position
+  ifstream in(startPosConfig);
+  if (!in) {
+    cerr << "Loading start position config failed!\n";
+    return ERROR_OPENING_CONFIGURATION_FILE;
+  }
+
+  if (in.peek() == std::ifstream::traits_type::eof())
+  {
+    cerr << "No starting position for rotor 0 in rotor position file: rotor.pos\n";
+    return NO_ROTOR_STARTING_POSITION;
+  }
+
   int startPos = -1;
   for (int i = 0; i <= index; i++)
   {
     in >> startPos;
+    cerr << "notch " << i << ": " << startPos << endl;
     if ((in.fail() && !in.eof()) || startPos == -1)
     {
       cerr << "Non-numeric character in rotor positions file rotor.pos\n";
@@ -110,6 +153,7 @@ int Rotor::loadStartPosition(char* startPosConfig, int index)
   _startPos = startPos;
 
   return NO_ERROR;
+  */
 }
 
 
@@ -207,34 +251,6 @@ int Rotor::checkValidNumbers(ifstream& in)
   return 0;
 }
 
-//OBSOLETE
-int Rotor::isInvalidMapping(int a[], int b[])
-{
-  for (int left = 0; left < NUM_LETTERS/2; left++) {
-    for (int right = 0; right < NUM_LETTERS/2; right++)
-    {
-      int current = a[left];
-      //check if digit maps to itself
-      if (left == right)
-      {
-        if(a[left] == b[right])
-        {
-          cerr << "index maps to itself.";
-          return INVALID_ROTOR_MAPPING;
-        }
-      }
-      if (b[right] == current)
-      {
-        cerr << "Invalid mapping of input "
-        << current << " to output " << 3
-        << " (output 3 is already mapped to from input 6) in";
-        return INVALID_ROTOR_MAPPING;
-      }
-    }
-  }
-
-  return 0;
-}
 
 void Rotor::print()
 {
