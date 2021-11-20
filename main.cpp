@@ -32,7 +32,6 @@ int main(int argc, char** argv)
 	if (encryptionStatus != 0) return encryptionStatus;
 
 	//enigma->printIO();
-	//cout << message;
 
-	return 0;
+	return NO_ERROR;
 }

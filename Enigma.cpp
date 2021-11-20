@@ -82,17 +82,6 @@ int Enigma::checkValidChar(char c)
   return NO_ERROR;
 }
 
-//OBSOLETE
-int Enigma::encrypt(istream& cin, ostream& cout, string& output)
-{
-  int cleanStatus = cleanInputText(cin, cout, output);
-  if (cleanStatus != 0) return cleanStatus;
-
-  for (auto i =0; i < (int)output.length(); i++) encryptChar(output[i]);
-  _outputText = output;
-  return 0; // Return NO_ERROR =. LC
-}
-
 void Enigma::encryptChar(char& c)
 {
   int digit = c - 'A';
@@ -145,31 +134,6 @@ void Enigma::scrambleReflector(int& digit) {reflector->scramble(digit);}
 
 
 /************** UTILITY FUNCTIONS **********/
-
-//OBSOLETE
-int Enigma::cleanInputText(istream& cin, ostream& cout, string& message)
-{
-  for (auto c = cin.get(); !cin.eof();)
-  {
-    if (c == ' ' || c == '	' || c =='\n')
-		{
-			c = cin.get();
-			continue;
-		}
-
-    if (c < 'A' || c > 'Z')
-    {
-      cout << message << endl;
-      cerr << (char) c << " is not a valid input character (input characters must be upper case letters A-Z)!\n";
-      return INVALID_INPUT_CHARACTER;
-    }
-		message += c;
-		c = cin.get();
-  }
-  _inputText = message;
-
-  return 0;
-}
 
 void Enigma::printIO()
 {

@@ -9,12 +9,8 @@
 
 using namespace std;
 
-struct Node_int
-{
-  int val = -1;
-  Node_int* next = NULL;
-  Node_int(int input) : val(input){}
-};
+/*Integer linked list to hold notches. decided to keep it in the Rotor heade*/
+
 
 class Rotor
 {
@@ -23,6 +19,12 @@ class Rotor
   int _mapping[26];
   int _startPos = 0;
   int _rotation = 0;
+  struct Node_int
+  {
+    int val = -1;
+    Node_int* next = NULL;
+    Node_int(int input) : val(input){}
+  };
   Node_int* _notches = NULL;
 
   /*check if numbers are integers and between 0-25

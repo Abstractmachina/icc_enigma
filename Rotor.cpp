@@ -97,6 +97,7 @@ int Rotor::loadStartPosition(char* startPosConfig, int index)
   in >> std::noskipws;
   while (in >> c)
   {
+    //cerr << c << endl;
     if (c != ' ')
     {
       if (!isdigit(c))
@@ -113,11 +114,13 @@ int Rotor::loadStartPosition(char* startPosConfig, int index)
       {
         int startPos = std::stoi(word);
         _startPos = startPos;
+        break;
       }
       word = "";
       count++;
     }
   }
+  in.close();
   return NO_ERROR;
   /*
   //load start position

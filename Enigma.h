@@ -10,8 +10,6 @@
 class Enigma
 {
 private:
-  const int ASCII_A = 65;
-  const int ASCII_Z = 90;
   Plugboard* plugboard;
   Reflector* reflector;
   Rotor* _rotors;
@@ -21,8 +19,8 @@ private:
 
   /*Setup functions*/
 
-  int cleanInputText(istream& cin, ostream& cout, string& message); //!TODO OBSOLETE
   int checkValidChar(char c);
+
   /*Encryption functions*/
   void encryptChar(char& c);
   void scramblePlugboard(int& digit);
@@ -34,7 +32,7 @@ public:
   //Constructors
   Enigma();
 
-  /*Setup functions*/
+  /**********  Setup functions ***********/
   int load(int argc, char** argv);
 
   /*Encryption functions*/
