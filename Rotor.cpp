@@ -226,7 +226,8 @@ int Rotor::isInvalidMapping(int a[], int b[])
       if (b[right] == current)
       {
         cerr << "Invalid mapping of input "
-        << current << " to output " << 3 << " (output 3 is already mapped to from input 6) in\n";
+        << current << " to output " << 3
+        << " (output 3 is already mapped to from input 6) in";
         return INVALID_ROTOR_MAPPING;
       }
     }
@@ -238,7 +239,8 @@ int Rotor::isInvalidMapping(int a[], int b[])
 void Rotor::print()
 {
   cerr << "Rotor " << _index << ":"<< endl;
-  cerr <<"Start Position: " << _startPos << " ; " << "Rotation: " << _rotation << " }\n";
+  cerr <<"Start Position: " << _startPos << " ; "
+  << "Rotation: " << _rotation << " }\n";
   printNotches();
   cerr << "Mapping: \n";
   for (int i = 0; i < NUM_LETTERS; i++)

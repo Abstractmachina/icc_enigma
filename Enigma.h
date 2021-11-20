@@ -35,15 +35,14 @@ public:
   Enigma();
 
   /*Setup functions*/
-  string readInput(istream& cin);
-
   int load(int argc, char** argv);
 
   /*Encryption functions*/
-  int encrypt(istream& cin, ostream& cout, string& output);
+  int encrypt(istream& cin, ostream& cout, string& output); //OBSOLETE
   int encrypt(ostream& cout, string rawInput);
 
   /*Utility functions*/
+  string readInput(istream& cin);
   void printIO(); //print input and output msg
   void printPlugboard();
   void printReflector();

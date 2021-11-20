@@ -83,6 +83,7 @@ int Enigma::checkValidChar(char c)
   return NO_ERROR;
 }
 
+//OBSOLETE
 int Enigma::encrypt(istream& cin, ostream& cout, string& output)
 {
   int cleanStatus = cleanInputText(cin, cout, output);
@@ -101,8 +102,7 @@ void Enigma::encryptChar(char& c)
   scrambleReflector(digit);
   scrambleRotors_LR(digit);
   scramblePlugboard(digit);
-  //convert back to char
-  c = digit + 'A';
+  c = digit + 'A';//convert back to char
 }
 
 void Enigma::scramblePlugboard(int& digit)
