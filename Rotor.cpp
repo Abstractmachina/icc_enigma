@@ -36,7 +36,7 @@ int Rotor::load(char* rotConfig, char* startPosConfig, int ind)
         if (_mapping[i] == _mapping[j])
         {
           cerr << "Invalid mapping of input "
-          << j << " to output " << _mapping[j] << " (output " << _mapping[j] << " is already mapped to from input "<< i <<")\n";
+          << j << " to output " << _mapping[j] << " (output " << _mapping[j] << " is already mapped to from input "<< i <<") in\n";
           return INVALID_ROTOR_MAPPING;
         }
     }
