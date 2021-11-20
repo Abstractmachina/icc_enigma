@@ -36,7 +36,9 @@ int Rotor::load(char* rotConfig, char* startPosConfig, int ind)
         if (_mapping[i] == _mapping[j])
         {
           cerr << "Invalid mapping of input "
-          << j << " to output " << _mapping[j] << " (output " << _mapping[j] << " is already mapped to from input "<< i <<") in\n";
+          << j << " to output " << _mapping[j] << " (output "
+          << _mapping[j] << " is already mapped to from input "
+          << i <<") in";
           return INVALID_ROTOR_MAPPING;
         }
     }
@@ -188,7 +190,7 @@ int Rotor::checkValidNumbers(ifstream& in)
     //check for invalid index
     if (val < 0 || val >= NUM_LETTERS)
     {
-      cerr << "A Invalid Index!\n";
+      cerr << "Invalid Index!\n";
       cerr << "val: " << val << endl;
       return INVALID_INDEX;
     }

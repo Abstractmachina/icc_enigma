@@ -36,6 +36,53 @@ int Enigma::load(int argc, char** argv)
 }
 
 /***********  Main encryption functions ************************/
+string Enigma::readInput(istream& cin)
+{
+  string rawInput = "";
+
+  for (auto c = cin.get(); !cin.eof();)
+  {
+    rawInput += c;
+    c = cin.get();
+  }
+  return rawInput;
+}
+
+int Enigma::encrypt(ostream& cout, string rawInput)
+{
+  for (int i = 0; i < (int)rawInput.length(); i++)
+  {
+    char c = rawInput[i];
+    int checkCharStatus = checkValidChar(c);
+    if (checkCharStatus != 0 && checkCharStatus != -1) return checkCharStatus;
+    //-1 if space, tab or endl, so do nothing.
+    if (checkCharStatus == 0)
+    {
+      _inputText += c;
+      encryptChar(c);
+      _outputText += c;
+      cout << c;
+    }
+  }
+  return NO_ERROR;
+}
+
+int Enigma::checkValidChar(char c)
+{
+  if (c == ' ' || c == '	' || c =='\n')
+  {
+    c = cin.get();
+    return -1;
+  }
+
+  if (c < 'A' || c > 'Z')
+  {
+    cerr << (char) c << " is not a valid input character (input characters must be upper case letters A-Z)!\n";
+    return INVALID_INPUT_CHARACTER;
+  }
+  return NO_ERROR;
+}
+
 int Enigma::encrypt(istream& cin, ostream& cout, string& output)
 {
   int cleanStatus = cleanInputText(cin, cout, output);
@@ -46,21 +93,16 @@ int Enigma::encrypt(istream& cin, ostream& cout, string& output)
   return 0; // Return NO_ERROR =. LC
 }
 
-int Enigma::encryptChar(char& c)
+void Enigma::encryptChar(char& c)
 {
-  //cerr << "Char: " << c<< endl;
-  int digit = c - ASCII_A;
-
+  int digit = c - 'A';
   scramblePlugboard(digit);
   scrambleRotors_RL(digit);
   scrambleReflector(digit);
   scrambleRotors_LR(digit);
   scramblePlugboard(digit);
-
   //convert back to char
-  c = digit + ASCII_A;
-
-  return 0;
+  c = digit + 'A';
 }
 
 void Enigma::scramblePlugboard(int& digit)
@@ -110,9 +152,7 @@ void Enigma::scrambleReflector(int& digit)
 }
 
 
-
 /************** UTILITY FUNCTIONS **********/
-
 
 int Enigma::cleanInputText(istream& cin, ostream& cout, string& message)
 {
@@ -124,7 +164,7 @@ int Enigma::cleanInputText(istream& cin, ostream& cout, string& message)
 			continue;
 		}
 
-    if (c < ASCII_A || c > ASCII_Z)
+    if (c < 'A' || c > 'Z')
     {
       cout << message << endl;
       cerr << (char) c << " is not a valid input character (input characters must be upper case letters A-Z)!\n";

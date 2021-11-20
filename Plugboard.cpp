@@ -11,11 +11,7 @@ using namespace std;
 //CONSTRUCTORS
 
 /*************FUNCTIONS****************/
-//What does this function do? LC
-void Plugboard::scramble(int& digit)
-{
-  digit = _mapping[digit];
-}
+
 
 /*load number pairs from a config file*/
 int Plugboard::load(const char* pbConfig)
@@ -43,6 +39,12 @@ int Plugboard::load(const char* pbConfig)
   return 0;
 }
 
+void Plugboard::scramble(int& digit)
+{
+  digit = _mapping[digit];
+}
+
+/******************** UTILITY FUNCTIONS *********************/
 int Plugboard::checkValidNumbers(ifstream& in, int& count)
 {
   count = 0;

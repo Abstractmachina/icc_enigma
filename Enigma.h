@@ -20,9 +20,11 @@ private:
   string _outputText = "";
 
   /*Setup functions*/
+
   int cleanInputText(istream& cin, ostream& cout, string& message);
+  int checkValidChar(char c);
   /*Encryption functions*/
-  int encryptChar(char& c);
+  void encryptChar(char& c);
   void scramblePlugboard(int& digit);
   void scrambleRotors_RL(int& digit);
   void scrambleRotors_LR(int& digit);
@@ -33,10 +35,13 @@ public:
   Enigma();
 
   /*Setup functions*/
+  string readInput(istream& cin);
+
   int load(int argc, char** argv);
 
   /*Encryption functions*/
   int encrypt(istream& cin, ostream& cout, string& output);
+  int encrypt(ostream& cout, string rawInput);
 
   /*Utility functions*/
   void printIO(); //print input and output msg
