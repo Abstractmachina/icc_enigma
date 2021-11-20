@@ -17,7 +17,7 @@ int Rotor::load(char* rotConfig, char* startPosConfig, int ind)
   if (!in)
   {
     cerr << "Loading rotor config failed!\n";
-    throw ERROR_OPENING_CONFIGURATION_FILE;
+    return ERROR_OPENING_CONFIGURATION_FILE;
   }
   //error checking
   int validNumStatus = checkValidNumbers(in);
@@ -37,7 +37,7 @@ int Rotor::load(char* rotConfig, char* startPosConfig, int ind)
         {
           cerr << "Invalid mapping of input "
           << j << " to output " << _mapping[j] << " (output " << _mapping[j] << " is already mapped to from input "<< i <<")\n";
-          throw INVALID_ROTOR_MAPPING;
+          return INVALID_ROTOR_MAPPING;
         }
     }
   }
@@ -80,13 +80,13 @@ int Rotor::loadStartPosition(char* startPosConfig, int index)
   ifstream in(startPosConfig);
   if (!in) {
     cerr << "Loading start position config failed!\n";
-    throw ERROR_OPENING_CONFIGURATION_FILE;
+    return ERROR_OPENING_CONFIGURATION_FILE;
   }
 
   if (in.peek() == std::ifstream::traits_type::eof())
   {
     cerr << "No starting position for rotor 0 in rotor position file: rotor.pos\n";
-    throw NO_ROTOR_STARTING_POSITION;
+    return NO_ROTOR_STARTING_POSITION;
   }
 
   int startPos = -1;
@@ -96,13 +96,13 @@ int Rotor::loadStartPosition(char* startPosConfig, int index)
     if (in.fail() && !in.eof())
     {
       cerr << "Non-numeric character in rotor positions file rotor.pos\n";
-      throw NON_NUMERIC_CHARACTER;
+      return NON_NUMERIC_CHARACTER;
     }
   }
   if (startPos == -1)
   {
     cerr << "No starting position for rotor 0 in rotor position file: rotor.pos" << endl;
-    throw NO_ROTOR_STARTING_POSITION;
+    return NO_ROTOR_STARTING_POSITION;
   }
   in.close();
   _startPos = startPos;
@@ -176,12 +176,12 @@ int Rotor::checkValidNumbers(ifstream& in)
       if (digitCounter < NUM_LETTERS)
       {
         cerr << "Non-numeric character for mapping in rotor file rotor.rot\n";
-        return 4;
+        return NON_NUMERIC_CHARACTER;
       }
       else
       {
         cerr << "Non-numeric character in rotor positions file rotor.pos\n";
-        return 4;
+        return NON_NUMERIC_CHARACTER;
       }
     }
 
@@ -190,7 +190,7 @@ int Rotor::checkValidNumbers(ifstream& in)
     {
       cerr << "A Invalid Index!\n";
       cerr << "val: " << val << endl;
-      return 3;
+      return INVALID_INDEX;
     }
     digitCounter++;
   }
@@ -198,7 +198,7 @@ int Rotor::checkValidNumbers(ifstream& in)
   if (digitCounter < NUM_LETTERS)
   {
     cerr << "Not all inputs mapped in rotor file: rotor.rot\n";
-    return 7;
+    return INVALID_ROTOR_MAPPING;
   }
   in.clear();                 // clear fail and eof bits
   in.seekg(0, std::ios::beg); // back to the start!
@@ -218,13 +218,14 @@ int Rotor::isInvalidMapping(int a[], int b[])
         if(a[left] == b[right])
         {
           cerr << "index maps to itself.";
-          return 7;
+          return INVALID_ROTOR_MAPPING;
         }
       }
       if (b[right] == current)
       {
         cerr << "Invalid mapping of input "
         << current << " to output " << 3 << " (output 3 is already mapped to from input 6) in\n";
+        return INVALID_ROTOR_MAPPING;
       }
     }
   }
