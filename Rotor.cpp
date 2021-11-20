@@ -93,7 +93,7 @@ int Rotor::loadStartPosition(char* startPosConfig, int index)
   for (int i = 0; i <= index; i++)
   {
     in >> startPos;
-    if (in.fail() && !in.eof())
+    if ((in.fail() && !in.eof()) || startPos == -1)
     {
       cerr << "Non-numeric character in rotor positions file rotor.pos\n";
       return NON_NUMERIC_CHARACTER;

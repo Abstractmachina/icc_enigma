@@ -126,9 +126,9 @@ int Enigma::cleanInputText(istream& cin, ostream& cout, string& message)
 
     if (c < ASCII_A || c > ASCII_Z)
     {
-      //cout << message << endl;
+      cout << message << endl;
       cerr << (char) c << " is not a valid input character (input characters must be upper case letters A-Z)!\n";
-      throw INVALID_INPUT_CHARACTER;
+      return INVALID_INPUT_CHARACTER;
     }
 		message += c;
 		c = cin.get();
