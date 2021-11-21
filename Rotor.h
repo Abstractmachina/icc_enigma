@@ -14,11 +14,14 @@ using namespace std;
 
 class Rotor
 {
+private:
   static const int NUM_LETTERS = 26;
   int _index = -1; //rotor index within assembly. left-most = 0;
   int _mapping[26];
   int _startPos = 0;
   int _rotation = 0;
+  /*integer linked list to store notches.
+  defined here as not used anywhere else*/
   struct Node_int
   {
     int val = -1;

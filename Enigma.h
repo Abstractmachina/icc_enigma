@@ -21,14 +21,16 @@ class Enigma
 private:
   Plugboard* plugboard;
   Reflector* reflector;
+  // pointer to array, as number unknown. tried to avoid vectors
   Rotor* _rotors;
   int _numRotors = 0;
   string _inputText = "";
   string _outputText = "";
 
-
-  int checkValidChar(char c);
-  /*Encryption functions*/
+  /*******  Encryption functions  *******/
+  /*encrypts chars individually. goes through
+  error checking first. if error detected, already
+  processed content is saved in output destination*/
   void encryptChar(char& c);
   /*Sub encryption functions taking
   input digit through each component.*/
@@ -36,18 +38,28 @@ private:
   void scrambleRotors_RL(int& digit);
   void scrambleRotors_LR(int& digit);
   void scrambleReflector(int& digit);
+  /*check if char is a letter A-Z*/
+  int checkValidChar(char c);
 
 public:
   //Constructors
 
-  /**********  Setup functions ***********/
+  /**********  Setup functions *********/
+  /*load all components through config files.
+  argc = number of arguments array
+  argv = arguments stored in array*/
   int load(int argc, char** argv);
 
   /*Encryption functions*/
+  /*main encryption function. */
   int encrypt(ostream& cout, string rawInput);
 
-  /*Utility functions*/
+  /*********  Utility functions **********/
+  /*returns stream content as raw string without
+  any error checking.*/
   string readInput(istream& cin);
+
+  /***  Debug ***/
   void printIO(); //print input and output msg
   void printPlugboard();
   void printReflector();

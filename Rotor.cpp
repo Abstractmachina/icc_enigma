@@ -97,6 +97,7 @@ int Rotor::loadStartPosition(char* startPosConfig, int index)
   in >> std::noskipws;
   while (in >> c)
   {
+    cerr << "Rotor " << _index << "position feed: " << c << endl;
     if (c != ' ')
     {
       if (!isdigit(c))

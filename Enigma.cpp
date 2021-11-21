@@ -52,7 +52,7 @@ int Enigma::encrypt(ostream& cout, string rawInput)
     char c = rawInput[i];
     int checkCharStatus = checkValidChar(c);
     if (checkCharStatus != 0 && checkCharStatus != -1) return checkCharStatus;
-    //-1 if space, tab or endl, so do nothing.
+    //returns -1 if space, tab or endl, in which case do nothing.
     if (checkCharStatus == 0)
     {
       _inputText += c;
@@ -104,10 +104,7 @@ void Enigma::scrambleRotors_RL(int& digit)
         _rotors[i].scramble(digit, true, isNotch, false);//first rotor always steps
       else
       {
-        if (isNotch)
-        {
-          _rotors[i].scramble(digit, true, isNotch, false);
-        }
+        if (isNotch)_rotors[i].scramble(digit, true, isNotch, false);
         else _rotors[i].scramble(digit, false, isNotch, false);
       }
     }
@@ -122,7 +119,6 @@ void Enigma::scrambleRotors_LR(int& digit)
     {
       bool dummyNotch = false; //notch is never engage in reverse
       _rotors[i].scramble(digit, false, dummyNotch, true);
-      //cerr << "Rotor " << i << " scramble: " << digit << endl;
     }
   }
 }
@@ -130,7 +126,7 @@ void Enigma::scrambleRotors_LR(int& digit)
 void Enigma::scrambleReflector(int& digit) {reflector->scramble(digit);}
 
 
-/************** UTILITY FUNCTIONS **********/
+/************** DEBUG **********/
 
 void Enigma::printIO()
 {
