@@ -100,8 +100,9 @@ int Rotor::loadStartPosition(char* startPosConfig, int index)
     cerr << "Rotor " << _index << "position feed: " << c << endl;
     if (c != ' ')
     {
-      if (!isdigit(c))
+      if (!isdigit(c) && c != '\0')
       {
+        cerr << "pre error log | c: " << c << endl;
         cerr << "Non-numeric character in rotor positions file rotor.pos\n";
         return NON_NUMERIC_CHARACTER;
       }
@@ -131,7 +132,7 @@ void Rotor::scramble(int& digit, bool step, bool& notchHit, bool reverse)
 {
   if (step) _rotation++; //step once if notch hit or right most rotor
   int offset = _startPos + _rotation;
-  int translation = digit + offset; //offset
+  int translation = digit + offset;
   if (translation > NUM_LETTERS - 1 ) translation %= NUM_LETTERS;
 
   //check for notches;
@@ -147,7 +148,6 @@ void Rotor::scramble(int& digit, bool step, bool& notchHit, bool reverse)
       }
     }
   }
-
   //scramble
   //right to left
   if (!reverse)
@@ -156,12 +156,7 @@ void Rotor::scramble(int& digit, bool step, bool& notchHit, bool reverse)
   else
   {
     for (int i = 0; i < NUM_LETTERS; i++)
-    {
-      if (_mapping[i] == translation)
-      {
-        digit = i;
-      }
-    }
+      if (_mapping[i] == translation)digit = i;
   }
   digit -= offset;
   //loop backward to get to correct index if value negative
@@ -216,10 +211,11 @@ int Rotor::checkValidNumbers(ifstream& in)
   }
   in.clear();                 // clear fail and eof bits
   in.seekg(0, std::ios::beg); // back to the start!
-  return 0;
+  return NO_ERROR;
 }
 
 
+/************** DEBUG ******************/
 void Rotor::print()
 {
   cerr << "Rotor " << _index << ":"<< endl;

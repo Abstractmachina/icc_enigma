@@ -1,3 +1,8 @@
+/*-------------------------------------------------------
+Taole Chen 211120
+
+---------------------------------------------------------*/
+
 #ifndef ROTOR_H
 #define ROTOR_H
 
@@ -5,12 +10,6 @@
 #include <iostream>
 #include <sstream>
 #include <string>
-
-
-using namespace std;
-
-/*Integer linked list to hold notches. decided to keep it in the Rotor heade*/
-
 
 class Rotor
 {
@@ -30,15 +29,15 @@ private:
   };
   Node_int* _notches = NULL;
 
+  int loadStartPosition(char* startPosConfig, int index);
+  void createMapping(std::ifstream& in);
   /*check if numbers are integers and between 0-25
    and whether all inputs are mapped.*/
-  int checkValidNumbers(ifstream& in);
+  int checkValidNumbers(std::ifstream& in);
 
 public:
-  Rotor();
-  int load(char* rotConfig, char* startPos, int index);
-  int loadStartPosition(char* startPosConfig, int index);
-  void createMapping(ifstream& in);
+  Rotor(); //required for uninit array
+  int load(char* rotConfig, char* startPosConfig, int index);
   void scramble(int& digit, bool step, bool& isNotch, bool reverse);
 
   void print();
