@@ -84,12 +84,10 @@ int Rotor::loadStartPosition(char* startPosConfig, int index)
   in >> std::noskipws;
   while (in >> c)
   {
-    cerr << "Rotor " << _index << "position feed: " << c << endl;
-    if (c != ' ' && c != '\0' && c != 10)
+    if (c != ' ' && c != '\0' && c != '\n')
     {
       if (!isdigit(c))
       {
-        cerr << "pre error log | c: " << (int)c << endl;
         cerr << "Non-numeric character in rotor positions file rotor.pos\n";
         return NON_NUMERIC_CHARACTER;
       }

@@ -6,10 +6,16 @@
 class Reflector
 {
 private:
-  static const int NUM_LETTERS = 26;
-  int _mapping[NUM_LETTERS];
+  static const int DIGIT_COUNT = 26;
+  int _mapping[DIGIT_COUNT];
 
-  bool checkValidMapping();
+  /*Note: no error checking, as input is assumed to be processed
+  beforehand and valid*/
+  void createMapping(ifstream& in);
+  /*check if there are exactly 13 pairs, 0-25*/
+  int checkValidNumbers(ifstream& in);
+    /*Check if any number is mapped to itself or duplicate*/
+  int checkValidMapping();
 
 public:
   Reflector();
