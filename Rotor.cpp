@@ -85,9 +85,9 @@ int Rotor::loadStartPosition(char* startPosConfig, int index)
   while (in >> c)
   {
     cerr << "Rotor " << _index << "position feed: " << c << endl;
-    if (c != ' ')
+    if (c != ' ' && c != '\0' && c != 10)
     {
-      if (!isdigit(c) && c != '\0')
+      if (!isdigit(c))
       {
         cerr << "pre error log | c: " << (int)c << endl;
         cerr << "Non-numeric character in rotor positions file rotor.pos\n";
@@ -126,17 +126,19 @@ void Rotor::scramble(int& digit, bool step, bool& notchHit, bool reverse)
   notchHit = isNotch(offset);
 
   //scramble
-  //right to left
-  if (!reverse)
-    digit = _mapping[translation];
-  // left to right
-  else
+  if (!reverse) //right to left
+    translation = _mapping[translation];
+  else // left to right
   {
     for (int i = 0; i < NUM_LETTERS; i++)
-      if (_mapping[i] == translation)digit = i;
+      if (_mapping[i] == translation)
+      {
+        translation = i;
+        break;
+      }
   }
 
-  digit -= offset;
+  digit = translation - offset; //
 
   //loop backward to get to correct index if value negative
   if (digit < 0)
@@ -199,6 +201,7 @@ int Rotor::checkValidNumbers(ifstream& in)
     digitCounter++;
   }
 
+  //Ccheck sufficient number of inputs
   if (digitCounter < NUM_LETTERS)
   {
     cerr << "Not all inputs mapped in rotor file: rotor.rot\n";

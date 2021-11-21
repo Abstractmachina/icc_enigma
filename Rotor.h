@@ -1,6 +1,7 @@
 /*-------------------------------------------------------
 Taole Chen 211120
-
+The Rotor class is a subcomponent of the Enigma encryption machine.
+it houses a scrambled mapping of the alphabet and 
 ---------------------------------------------------------*/
 
 #ifndef ROTOR_H
@@ -29,6 +30,7 @@ private:
   };
   Node_int* _notches = NULL;
 
+  /*********  SETUP FUNCTIONS *********/
   int loadStartPosition(char* startPosConfig, int index);
   void createMapping(std::ifstream& in);
   /*check if numbers are integers and between 0-25
@@ -37,7 +39,7 @@ private:
   /*check if any numbers are mapped twice*/
   int checkValidMapping();
 
-  /***********  Encryption Functions  **********/
+  /*****  Encryption Functions  *******/
   bool isNotch(int offset);
 
 public:
