@@ -7,9 +7,6 @@
 
 using namespace std;
 
-Enigma::Enigma(){}
-
-
 int Enigma::load(int argc, char** argv)
 {
   /*LOAD PLUGBOARD*/

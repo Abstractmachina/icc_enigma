@@ -23,7 +23,7 @@ int main(int argc, char** argv)
 	int loadStatus = enigma->load(argc, argv);
 	if (loadStatus != 0) return loadStatus;
 
-	//enigma->printRotors();
+	enigma->printRotors();
 	//enigma->printReflector();
 	//enigma->printPlugboard();
 
@@ -31,7 +31,7 @@ int main(int argc, char** argv)
 	int encryptionStatus = enigma->encrypt(cout, rawInput);
 	if (encryptionStatus != 0) return encryptionStatus;
 
-	//enigma->printIO();
+	enigma->printIO();
 
 	return NO_ERROR;
 }

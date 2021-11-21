@@ -1,14 +1,14 @@
 /*-------------------------------------------------------
-                    Taole Chen 20 Nov 2021
+Taole Chen 211120
 Enigma class contains all functional components (plugboard,
 reflector, rotors) of the enigma encryption machine
 developed in WWII.
--processes input text from 
-
-
+-processes input text from redirected cin ostream
+-saves encrypted message to output file.
+-loads components from config files and aggregates all
+error checks.
+-coordinates encryption process.
 ---------------------------------------------------------*/
-
-
 #ifndef ENIGMA_H
 #define ENIGMA_H
 
@@ -26,12 +26,12 @@ private:
   string _inputText = "";
   string _outputText = "";
 
-  /*Setup functions*/
 
   int checkValidChar(char c);
-
   /*Encryption functions*/
   void encryptChar(char& c);
+  /*Sub encryption functions taking
+  input digit through each component.*/
   void scramblePlugboard(int& digit);
   void scrambleRotors_RL(int& digit);
   void scrambleRotors_LR(int& digit);
@@ -39,13 +39,11 @@ private:
 
 public:
   //Constructors
-  Enigma();
 
   /**********  Setup functions ***********/
   int load(int argc, char** argv);
 
   /*Encryption functions*/
-  int encrypt(istream& cin, ostream& cout, string& output); //OBSOLETE
   int encrypt(ostream& cout, string rawInput);
 
   /*Utility functions*/
