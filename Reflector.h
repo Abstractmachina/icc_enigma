@@ -7,7 +7,9 @@ that swap with each other on pass through.
 #ifndef REFLECTOR_H
 #define REFLECTOR_H
 
-#include "structs.h"
+#include <iostream>
+#include <fstream>
+#include <cstdio>
 
 class Reflector
 {
@@ -17,9 +19,9 @@ private:
 
   /*Note: no error checking, as input is assumed to be processed
   beforehand and valid*/
-  void createMapping(ifstream& in);
+  void createMapping(std::ifstream& in);
   /*check if there are exactly 13 pairs, 0-25*/
-  int checkValidNumbers(ifstream& in);
+  int checkValidNumbers(std::ifstream& in);
     /*Check if any number is mapped to itself or duplicate*/
   int checkValidMapping();
 

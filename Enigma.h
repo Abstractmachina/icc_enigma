@@ -23,8 +23,8 @@ private:
   Reflector* reflector;
   Rotor* _rotors; //pointer to uninit array
   int _numRotors = 0;
-  string _inputText = "";
-  string _outputText = "";
+  std::string _inputText = "";
+  std::string _outputText = "";
 
   /*******  Encryption functions  *******/
   /*encrypts chars individually. goes through
@@ -55,12 +55,12 @@ public:
   /*main encryption function. calls all sub encryption
   tasks in the correct order and saves encrypted msg
   to output destination.*/
-  int encrypt(ostream& cout, string rawInput);
+  int encrypt(std::ostream& cout, std::string rawInput);
 
   /*********  Utility functions **********/
   /*returns stream content as raw string without
   any error checking.*/
-  string readInput(istream& cin);
+  std::string readInput(std::istream& cin);
 
   /***  Debug ***/
   void printIO(); //print input and output msg

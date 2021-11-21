@@ -1,7 +1,3 @@
-#include <iostream>
-#include <fstream>
-#include <cstdio>
-
 #include "Reflector.h"
 #include "errors.h"
 
