@@ -1,7 +1,8 @@
 /*-------------------------------------------------------
 Taole Chen 211120
 The Rotor class is a subcomponent of the Enigma encryption machine.
-it houses a scrambled mapping of the alphabet and 
+it houses a user-specified scrambled mapping of the alphabet
+and contains all mechanical functionality of the rotor object.
 ---------------------------------------------------------*/
 
 #ifndef ROTOR_H

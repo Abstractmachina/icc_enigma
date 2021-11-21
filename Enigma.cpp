@@ -52,7 +52,6 @@ int Enigma::encrypt(ostream& cout, string rawInput)
     char c = rawInput[i];
     int checkCharStatus = checkValidChar(c);
     if (checkCharStatus != 0 && checkCharStatus != -1) return checkCharStatus;
-    //returns -1 if space, tab or endl, in which case do nothing.
     if (checkCharStatus == 0)
     {
       _inputText += c;

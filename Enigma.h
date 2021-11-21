@@ -21,8 +21,7 @@ class Enigma
 private:
   Plugboard* plugboard;
   Reflector* reflector;
-  // pointer to array, as number unknown. tried to avoid vectors
-  Rotor* _rotors;
+  Rotor* _rotors; //pointer to uninit array
   int _numRotors = 0;
   string _inputText = "";
   string _outputText = "";
@@ -38,20 +37,24 @@ private:
   void scrambleRotors_RL(int& digit);
   void scrambleRotors_LR(int& digit);
   void scrambleReflector(int& digit);
-  /*check if char is a letter A-Z*/
+  /*check if char is a letter A-Z.
+  returns -1 if char is space, tab or endl.*/
   int checkValidChar(char c);
 
 public:
-  //Constructors
-
   /**********  Setup functions *********/
   /*load all components through config files.
-  argc = number of arguments array
-  argv = arguments stored in array*/
+  argc = number of arguments in array
+  argv = arguments array
+  order of args: plugboard, reflector, rotors,
+  rotors start position. plugboard can be empty,
+  rotors can be null.*/
   int load(int argc, char** argv);
 
-  /*Encryption functions*/
-  /*main encryption function. */
+  /********  Encryption functions  *******/
+  /*main encryption function. calls all sub encryption
+  tasks in the correct order and saves encrypted msg
+  to output destination.*/
   int encrypt(ostream& cout, string rawInput);
 
   /*********  Utility functions **********/
@@ -63,7 +66,7 @@ public:
   void printIO(); //print input and output msg
   void printPlugboard();
   void printReflector();
-  void printRotors(); //
+  void printRotors();
 
   //Destructor
   ~Enigma()

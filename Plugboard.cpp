@@ -1,19 +1,9 @@
-//#include <fstream>
-#include <cstdio>
-//#include <iostream>
-#include <string>
-
 #include "Plugboard.h"
 #include "errors.h"
 
 using namespace std;
 
-//CONSTRUCTORS
-
-/*************FUNCTIONS****************/
-
-
-/*load number pairs from a config file*/
+/*************** SETUP FUNCTIONS ******************/
 int Plugboard::load(const char* pbConfig)
 {
   ifstream in(pbConfig);
@@ -30,8 +20,7 @@ int Plugboard::load(const char* pbConfig)
   createMapping(in, count);
 
   in.close();
-
-  //check if closing file was successful. LC
+  if (in.fail()) cerr << "plugboard.pb failed to close\n";
 
   int validMappingStatus = checkValidMapping();
   if (validMappingStatus != 0) return validMappingStatus;
@@ -39,10 +28,7 @@ int Plugboard::load(const char* pbConfig)
   return 0;
 }
 
-void Plugboard::scramble(int& digit)
-{
-  digit = _mapping[digit];
-}
+void Plugboard::scramble(int& digit)  {digit = _mapping[digit];}
 
 /******************** UTILITY FUNCTIONS *********************/
 int Plugboard::checkValidNumbers(ifstream& in, int& count)

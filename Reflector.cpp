@@ -7,16 +7,6 @@
 
 using namespace std;
 
-/*************  CONSTRUCTORS  *************/
-Reflector::Reflector(){}
-
-//FUNCTIONS
-void Reflector::scramble(int& digit)
-{
-  digit = _mapping[digit];
-}
-
-
 int Reflector::load(const char* refConfig)
 {
   ifstream in(refConfig);
@@ -37,6 +27,9 @@ int Reflector::load(const char* refConfig)
   return NO_ERROR;
 }
 
+void Reflector::scramble(int& digit) {digit = _mapping[digit];}
+
+/*******  UTILITY FUNCTIONS ***********/
 void Reflector::createMapping(ifstream& in)
 {
   for (int i =0; i < DIGIT_COUNT/2; i++)
@@ -117,6 +110,7 @@ int Reflector::checkValidMapping()
   return NO_ERROR;
 }
 
+/*  DEBUG */
 void Reflector::print()
 {
   cerr << "Reflector Mapping:\n";

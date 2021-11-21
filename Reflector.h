@@ -1,3 +1,9 @@
+/*-------------------------------------------------------
+Taole Chen 211120
+The Reflector class is a subcomponent of the Enigma encryption
+machine. It contains 13 number pairs (must all be assigned)
+that swap with each other on pass through.
+---------------------------------------------------------*/
 #ifndef REFLECTOR_H
 #define REFLECTOR_H
 
@@ -18,10 +24,9 @@ private:
   int checkValidMapping();
 
 public:
-  Reflector();
-
   void scramble(int& digit);
   int load(const char* refConfig);
+  /*  DEBUG */
   void print();
 
   ~Reflector()
