@@ -34,12 +34,18 @@ private:
   /*check if numbers are integers and between 0-25
    and whether all inputs are mapped.*/
   int checkValidNumbers(std::ifstream& in);
+  /*check if any numbers are mapped twice*/
+  int checkValidMapping();
+
+  /***********  Encryption Functions  **********/
+  bool isNotch(int offset);
 
 public:
   Rotor(); //required for uninit array
   int load(char* rotConfig, char* startPosConfig, int index);
   void scramble(int& digit, bool step, bool& isNotch, bool reverse);
 
+  /*DEBUG*/
   void print();
   void printNotches();
   void setStartPos(int pos) { _startPos = pos; }
