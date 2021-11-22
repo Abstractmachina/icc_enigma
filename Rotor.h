@@ -38,7 +38,7 @@ private:
    and whether all inputs are mapped.*/
   int checkValidNumbers(std::ifstream& in);
   /*check if any numbers are mapped twice*/
-  int checkValidMapping();
+  int checkValidMapping(char* filename);
 
   /*****  Encryption Functions  *******/
   bool isNotch(int offset);

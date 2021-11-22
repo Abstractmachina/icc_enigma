@@ -28,7 +28,7 @@ int Rotor::load(char* rotConfig, char* startPosConfig, int ind)
   in.close();
 
   //check if mapping is correct
-  int validMappingStatus = checkValidMapping();
+  int validMappingStatus = checkValidMapping(rotConfig);
   if (validMappingStatus != 0) return validMappingStatus;
 
   //load start position
@@ -210,7 +210,7 @@ int Rotor::checkValidNumbers(ifstream& in)
   return NO_ERROR;
 }
 
-int Rotor::checkValidMapping()
+int Rotor::checkValidMapping(char* filename)
 {
   for (int i = 0; i < NUM_LETTERS; i++)
   {
@@ -221,7 +221,7 @@ int Rotor::checkValidMapping()
           cerr << "Invalid mapping of input "
           << j << " to output " << _mapping[j] << " (output "
           << _mapping[j] << " is already mapped to from input "
-          << i <<") in";
+          << i <<") in rotor file: " << filename << endl;
           return INVALID_ROTOR_MAPPING;
         }
     }
